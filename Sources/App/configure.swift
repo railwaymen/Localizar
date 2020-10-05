@@ -12,9 +12,7 @@ public func configure(_ app: Application) throws {
         password: Environment.get("DATABASE_PASSWORD")!,
         database: Environment.get("DATABASE_NAME")!
     ), as: .psql)
-    
-    app.migrations.add(CreateTodo())
-    
+        
     // register routes
     try routes(app)
 }
