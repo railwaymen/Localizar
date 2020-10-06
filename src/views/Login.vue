@@ -21,11 +21,13 @@
 
 <script>
 export default {
-  methods: () => {
-    const { username, password } = this;
-    this.$store.dispatch(AUTH_REQUEST, { username, password }).then(() => {
-      this.$router.push("/");
-    });
+  methods: {
+    login: () => {
+      const { username, password } = this;
+      this.$store.dispatch("AUTH_REQUEST", { username, password }).then(() => {
+        this.$router.push("/");
+      });
+    },
   },
 };
 </script>
