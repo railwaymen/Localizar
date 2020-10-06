@@ -9,8 +9,36 @@
       <v-btn to="/about" class="nav-btn">About</v-btn>
 
       <v-spacer></v-spacer>
-      <v-btn to="/sign_up" color="success" class="nav-btn">Sign up</v-btn>
-      <v-btn to="/login" color="info" class="nav-btn">Log in</v-btn>
+
+      <v-btn to="/projects" class="nav-btn" v-if="this.$store.isAuthenticated">
+        Projects
+      </v-btn>
+
+      <v-btn
+        color="error"
+        class="nav-btn"
+        v-if="this.$store.isAuthenticated"
+        @click="logout"
+      >
+        Log out
+      </v-btn>
+
+      <v-btn
+        to="/sign_up"
+        color="success"
+        class="nav-btn"
+        v-if="!this.$store.isAuthenticated"
+      >
+        Sign up
+      </v-btn>
+      <v-btn
+        to="/login"
+        color="info"
+        class="nav-btn"
+        v-if="!this.$store.isAuthenticated"
+      >
+        Log in
+      </v-btn>
     </v-app-bar>
 
     <v-main>
@@ -22,6 +50,8 @@
 </template>
 
 <script>
+const axios = require("axios").default;
+
 export default {
   methods: {
     logout: () => {
@@ -29,6 +59,20 @@ export default {
         this.$router.push("/login");
       });
     },
+  },
+  created: () => {
+    axios.interceptors.response.use(undefined, (error) => {
+      return new Promise(() => {
+        if (
+          error.status === 401 &&
+          error.config &&
+          !error.config.__isRetryRequest
+        ) {
+          this.$store.dispatch("AUTH_LOGOUT");
+        }
+        throw error;
+      });
+    });
   },
 };
 </script>

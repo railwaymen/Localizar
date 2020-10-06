@@ -1,4 +1,4 @@
-const { axios } = require("axios")
+const axios = require("axios").default
 
 export const AUTH_REQUEST = 'AUTH_REQUEST'
 export const AUTH_LOGOUT = 'AUTH_LOGOUT'
@@ -20,7 +20,7 @@ export const AuthModule = {
         [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
             return new Promise((resolve, reject) => {
                 commit(AUTH_REQUEST)
-                axios({ url: 'auth', data: user, method: 'POST' })
+                axios.post('/v1/sessions', { data: user })
                     .then(response => {
                         const token = response.data.token
                         localStorage.setItem('user-token', token)
