@@ -10,14 +10,14 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn to="/projects" class="nav-btn" v-if="this.$store.isAuthenticated">
+      <v-btn to="/projects" class="nav-btn" v-if="authViewsVisible">
         Projects
       </v-btn>
 
       <v-btn
         color="error"
         class="nav-btn"
-        v-if="this.$store.isAuthenticated"
+        v-if="authViewsVisible"
         @click="logout"
       >
         Log out
@@ -27,16 +27,11 @@
         to="/sign_up"
         color="success"
         class="nav-btn"
-        v-if="!this.$store.isAuthenticated"
+        v-if="!authViewsVisible"
       >
         Sign up
       </v-btn>
-      <v-btn
-        to="/login"
-        color="info"
-        class="nav-btn"
-        v-if="!this.$store.isAuthenticated"
-      >
+      <v-btn to="/login" color="info" class="nav-btn" v-if="!authViewsVisible">
         Log in
       </v-btn>
     </v-app-bar>
@@ -51,12 +46,29 @@
 
 <script>
 export default {
+  data() {
+    return {
+      authViewsVisible: false,
+    };
+  },
+  created() {
+    this.unwatch = this.$store.watch(
+      (state, getters) => getters.isAuthenticated,
+      (newValue) => {
+        this.authViewsVisible = newValue;
+      }
+    );
+    this.authViewsVisible = this.$store.getters.isAuthenticated;
+  },
   methods: {
-    logout: () => {
+    logout() {
       this.$store.dispatch("AUTH_LOGOUT").then(() => {
         this.$router.push("/login");
       });
     },
+  },
+  beforeDestroy() {
+    this.unwatch();
   },
 };
 </script>

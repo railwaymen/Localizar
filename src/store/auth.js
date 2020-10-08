@@ -1,4 +1,5 @@
 import { apiClient } from '../modules/apiClient'
+import { storageKey } from '../modules/storageKey'
 
 export const AUTH_REQUEST = 'AUTH_REQUEST'
 export const AUTH_LOGOUT = 'AUTH_LOGOUT'
@@ -7,9 +8,9 @@ export const AUTH_ERROR = 'AUTH_ERROR'
 
 export const USER_REQUEST = 'USER_REQUEST'
 
-export const AuthModule = {
+export const authModule = {
     state: {
-        token: localStorage.getItem('user-token') || '',
+        token: localStorage.getItem(storageKey.userToken) || '',
         status: '',
     },
     getters: {
@@ -20,7 +21,7 @@ export const AuthModule = {
         [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
             return new Promise((resolve, reject) => {
                 commit(AUTH_REQUEST)
-                apiClient.post('/v1/sessions', { data: user })
+                apiClient.post('/v1/sessions', user)
                     .then(response => {
                         const token = response.data.token
                         apiClient.setToken(token)
@@ -54,5 +55,9 @@ export const AuthModule = {
         [AUTH_ERROR]: (state) => {
             state.status = 'error'
         },
+        [AUTH_LOGOUT]: (state) => {
+            state.status = 'error'
+            state.token = ''
+        }
     }
 }

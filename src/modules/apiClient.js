@@ -4,7 +4,7 @@ import store from '../store'
 import { storageKey } from './storageKey'
 
 const initClient = () => {
-  const getBaseURL = () => "https://localhost:8080"
+  const getBaseURL = () => "http://localhost:8080"
   const getToken = () => localStorage.getItem(storageKey.userToken)
 
   const client = axios.create()

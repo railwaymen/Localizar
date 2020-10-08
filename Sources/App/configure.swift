@@ -4,6 +4,9 @@ import Vapor
 
 // configures your application
 public func configure(_ app: Application) throws {
+    app.directory.publicDirectory = app.directory.workingDirectory + "/dist"
+    app.directory.viewsDirectory = app.directory.workingDirectory + "/dist"
+    
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
     app.databases.use(.postgres(
@@ -14,12 +17,13 @@ public func configure(_ app: Application) throws {
     ), as: .psql)
     
     let modules: [Module] = [
-        UsersModule()
+        FrontendModule(),
+        UsersModule(),
     ]
     
+    app.views.use { app in app.views.plaintext }
     app.migrations.add(modules.flatMap { $0.migrations })
-    try modules.map(\.router)
-        .forEach {
-            try $0.boot(routes: app.routes.grouped("v1"))
-        }
+    try modules.map(\.router).forEach {
+        try $0.boot(routes: app.routes)
+    }
 }
