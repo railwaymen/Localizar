@@ -50,8 +50,6 @@
 </template>
 
 <script>
-const axios = require("axios").default;
-
 export default {
   methods: {
     logout: () => {
@@ -59,20 +57,6 @@ export default {
         this.$router.push("/login");
       });
     },
-  },
-  created: () => {
-    axios.interceptors.response.use(undefined, (error) => {
-      return new Promise(() => {
-        if (
-          error.status === 401 &&
-          error.config &&
-          !error.config.__isRetryRequest
-        ) {
-          this.$store.dispatch("AUTH_LOGOUT");
-        }
-        throw error;
-      });
-    });
   },
 };
 </script>

@@ -1,4 +1,4 @@
-const axios = require("axios").default
+import { apiClient } from '../modules/apiClient'
 
 export const AUTH_REQUEST = 'AUTH_REQUEST'
 export const AUTH_LOGOUT = 'AUTH_LOGOUT'
@@ -20,18 +20,17 @@ export const AuthModule = {
         [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
             return new Promise((resolve, reject) => {
                 commit(AUTH_REQUEST)
-                axios.post('/v1/sessions', { data: user })
+                apiClient.post('/v1/sessions', { data: user })
                     .then(response => {
                         const token = response.data.token
-                        localStorage.setItem('user-token', token)
-                        axios.defaults.headers.common['Authorization'] = token
+                        apiClient.setToken(token)
                         commit(AUTH_SUCCESS, token)
                         dispatch(USER_REQUEST)
                         resolve(response)
                     })
                     .catch(error => {
                         commit(AUTH_ERROR, error)
-                        localStorage.removeItem('user-token')
+                        apiClient.removeToken
                         reject(error)
                     })
             })
@@ -39,8 +38,7 @@ export const AuthModule = {
         [AUTH_LOGOUT]: ({ commit }) => {
             return new Promise((resolve) => {
                 commit(AUTH_LOGOUT)
-                localStorage.removeItem('user-token')
-                delete axios.defaults.headers.common['Authorization']
+                apiClient.removeToken()
                 resolve()
             })
         }
