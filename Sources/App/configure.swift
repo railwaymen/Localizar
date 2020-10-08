@@ -12,7 +12,14 @@ public func configure(_ app: Application) throws {
         password: Environment.get("DATABASE_PASSWORD")!,
         database: Environment.get("DATABASE_NAME")!
     ), as: .psql)
-        
-    // register routes
-    try routes(app)
+    
+    let modules: [Module] = [
+        UsersModule()
+    ]
+    
+    app.migrations.add(modules.flatMap { $0.migrations })
+    try modules.map(\.router)
+        .forEach {
+            try $0.boot(routes: app.routes.grouped("v1"))
+        }
 }

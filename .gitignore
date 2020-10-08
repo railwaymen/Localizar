@@ -6,12 +6,12 @@ DerivedData/
 .DS_Store
 db.sqlite
 .swiftpm
-.env.production
 
 node_modules
 /dist
 
 # local env files
+.env*
 .env.local
 .env.*.local
 
