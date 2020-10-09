@@ -5,9 +5,8 @@ import { storageKey } from './storageKey'
 import { coreBackendHost } from '../config'
 
 const initClient = () => {
-  const getBaseURL = () => coreBackendHost || ""
+  const getBaseURL = () => coreBackendHost || ''
   const getToken = () => localStorage.getItem(storageKey.userToken)
-  console.log(getBaseURL())
 
   const client = axios.create()
 

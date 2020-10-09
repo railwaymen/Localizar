@@ -6,14 +6,14 @@ final class UserTokenModel: ModelTokenAuthenticatable {
     static var valueKey: KeyPath<UserTokenModel, Field<String>> = \.$token
     static var userKey: KeyPath<UserTokenModel, Parent<UserModel>> = \.$user
     
-    var isValid: Bool {
-        createdAt.addingTimeInterval(.day) > Date()
-    }
-    
     @ID var id: UUID?
     @Field(key: FieldKeys.token) var token: String
     @Field(key: FieldKeys.createdAt) var createdAt: Date
     @Parent(key: FieldKeys.user) var user: UserModel
+    
+    var isValid: Bool {
+        createdAt.addingTimeInterval(.day) > Date()
+    }
     
     // MARK: - Initialization
     init() {}

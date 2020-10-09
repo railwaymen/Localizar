@@ -49,7 +49,7 @@ private func configureModules(_ app: Application) throws {
     ]
     
     app.migrations.add(modules.flatMap { $0.migrations })
-    try modules.map(\.router).forEach {
-        try $0.boot(routes: app.routes)
+    try modules.forEach {
+        try $0.router.boot(routes: app.routes)
     }
 }

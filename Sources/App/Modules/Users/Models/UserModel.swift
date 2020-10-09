@@ -7,6 +7,7 @@ final class UserModel: Model, Authenticatable {
     @ID var id: UUID?
     @Field(key: FieldKeys.username) var username: String
     @Field(key: FieldKeys.password) var password: String
+    @Children(for: \UserTokenModel.$user) var tokens: [UserTokenModel]
     
     // MARK: - Initialization
     init() {}

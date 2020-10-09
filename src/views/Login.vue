@@ -1,9 +1,8 @@
 <template>
   <div id="login">
-    <v-form ref="form">
+    <v-form>
       <v-text-field
         v-model="username"
-        name="username"
         label="Username"
         id="username"
       ></v-text-field>

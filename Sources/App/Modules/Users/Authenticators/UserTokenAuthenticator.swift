@@ -1,16 +1,6 @@
 import Vapor
 import Fluent
 
-extension ModelTokenAuthenticatable {
-    var _$value: Field<String> {
-        self[keyPath: Self.valueKey]
-    }
-
-    var _$user: Parent<User> {
-        self[keyPath: Self.userKey]
-    }
-}
-
 struct UserTokenAuthenticator<Token: ModelTokenAuthenticatable>: RequestAuthenticator {
     
     func authenticate(request req: Request) -> EventLoopFuture<Void> {
@@ -32,5 +22,16 @@ struct UserTokenAuthenticator<Token: ModelTokenAuthenticatable>: RequestAuthenti
                     req.auth.login($0)
                 }
             }
+    }
+}
+
+// MARK: - Helper Extensions
+private extension ModelTokenAuthenticatable {
+    var _$value: Field<String> {
+        self[keyPath: Self.valueKey]
+    }
+
+    var _$user: Parent<User> {
+        self[keyPath: Self.userKey]
     }
 }
