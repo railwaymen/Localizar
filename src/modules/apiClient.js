@@ -33,7 +33,7 @@ const initClient = () => {
       switch (error.response.status) {
         case 401:
           store.dispatch('AUTH_LOGOUT')
-          router.push('/login')
+          router.push('/log_in')
           break
         default:
           break

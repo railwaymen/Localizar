@@ -5,33 +5,46 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn to="/" class="nav-btn">Home</v-btn>
-      <v-btn to="/about" class="nav-btn">About</v-btn>
+      <v-btn :to="{ name: 'home' }" class="nav-btn" exact>Home</v-btn>
+      <v-btn :to="{ name: 'about' }" class="nav-btn" exact>About</v-btn>
 
       <v-spacer></v-spacer>
 
-      <v-btn to="/projects" class="nav-btn" v-if="authViewsVisible">
+      <v-btn
+        :to="{ name: 'projects' }"
+        class="nav-btn"
+        v-if="isAuthenticated"
+        exact
+      >
         Projects
       </v-btn>
 
       <v-btn
         color="error"
         class="nav-btn"
-        v-if="authViewsVisible"
+        v-if="isAuthenticated"
         @click="logout"
+        exact
       >
         Log out
       </v-btn>
 
       <v-btn
-        to="/sign_up"
+        :to="{ name: 'sign_up' }"
         color="success"
         class="nav-btn"
-        v-if="!authViewsVisible"
+        v-if="!isAuthenticated"
+        exact
       >
         Sign up
       </v-btn>
-      <v-btn to="/login" color="info" class="nav-btn" v-if="!authViewsVisible">
+      <v-btn
+        :to="{ name: 'log_in' }"
+        color="info"
+        class="nav-btn"
+        v-if="!isAuthenticated"
+        exact
+      >
         Log in
       </v-btn>
     </v-app-bar>
@@ -45,30 +58,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  data() {
-    return {
-      authViewsVisible: false,
-    };
-  },
-  created() {
-    this.unwatch = this.$store.watch(
-      (state, getters) => getters.isAuthenticated,
-      (newValue) => {
-        this.authViewsVisible = newValue;
-      }
-    );
-    this.authViewsVisible = this.$store.getters.isAuthenticated;
+  computed: {
+    ...mapGetters("auth", ["isAuthenticated"]),
   },
   methods: {
     logout() {
-      this.$store.dispatch("AUTH_LOGOUT").then(() => {
-        this.$router.push("/login");
+      this.$store.dispatch("auth/AUTH_LOGOUT").then(() => {
+        this.$router.push("/log_in");
       });
     },
-  },
-  beforeDestroy() {
-    this.unwatch();
   },
 };
 </script>

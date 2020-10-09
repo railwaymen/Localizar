@@ -1,5 +1,5 @@
-import { apiClient } from '../modules/apiClient'
-import { storageKey } from '../modules/storageKey'
+import { apiClient } from '@/modules/apiClient'
+import { storageKey } from '@/modules/storageKey'
 
 export const AUTH_REQUEST = 'AUTH_REQUEST'
 export const AUTH_LOGOUT = 'AUTH_LOGOUT'
@@ -9,6 +9,7 @@ export const AUTH_ERROR = 'AUTH_ERROR'
 export const USER_REQUEST = 'USER_REQUEST'
 
 export const authModule = {
+    namespaced: true,
     state: {
         token: localStorage.getItem(storageKey.userToken) || '',
         status: '',

@@ -5,6 +5,7 @@
         v-model="username"
         label="Username"
         id="username"
+        autocomplete="current-login"
       ></v-text-field>
 
       <v-text-field
@@ -12,6 +13,7 @@
         label="Password"
         id="password"
         type="password"
+        autocomplete="current-password"
       ></v-text-field>
 
       <v-btn color="success" id="submit" @click="login">Submit</v-btn>
@@ -21,6 +23,7 @@
 
 <script>
 export default {
+  name: "log_in",
   data: () => ({
     username: "",
     password: "",
@@ -29,9 +32,11 @@ export default {
     login() {
       const username = this.username;
       const password = this.password;
-      this.$store.dispatch("AUTH_REQUEST", { username, password }).then(() => {
-        this.$router.push("/");
-      });
+      this.$store
+        .dispatch("auth/AUTH_REQUEST", { username, password })
+        .then(() => {
+          this.$router.push("/");
+        });
     },
   },
 };
