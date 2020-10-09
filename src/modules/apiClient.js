@@ -2,10 +2,12 @@ import axios from 'axios'
 import router from '../router'
 import store from '../store'
 import { storageKey } from './storageKey'
+import { coreBackendHost } from '../config'
 
 const initClient = () => {
-  const getBaseURL = () => "http://localhost:8080"
+  const getBaseURL = () => coreBackendHost || ""
   const getToken = () => localStorage.getItem(storageKey.userToken)
+  console.log(getBaseURL())
 
   const client = axios.create()
 
