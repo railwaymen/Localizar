@@ -56,6 +56,15 @@
         }
       },
       {
+        "package": "ModelValidator",
+        "repositoryURL": "https://github.com/railwaymen/ModelValidator.git",
+        "state": {
+          "branch": null,
+          "revision": "2d1dd91521476d47573d9e7939a2288deb841640",
+          "version": "1.0.0"
+        }
+      },
+      {
         "package": "postgres-kit",
         "repositoryURL": "https://github.com/vapor/postgres-kit.git",
         "state": {

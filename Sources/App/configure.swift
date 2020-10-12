@@ -3,11 +3,18 @@ import FluentPostgresDriver
 import Vapor
 
 // configures your application
-public func configure(_ app: Application) throws {    
-    try configureCORS(app)
+public func configure(_ app: Application) throws {
     try configureDirectories(app)
+    try configureMiddlewares(app)
     try configureDatabase(app)
     try configureModules(app)
+}
+
+private func configureMiddlewares(_ app: Application) throws {
+    app.middleware = .init()
+    try configureCORS(app)
+    app.middleware.use(ErrorMiddleware.default(environment: app.environment))
+    app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 }
 
 private func configureCORS(_ app: Application) throws {
@@ -29,8 +36,6 @@ private func configureCORS(_ app: Application) throws {
 private func configureDirectories(_ app: Application) throws {
     app.directory.publicDirectory = app.directory.workingDirectory + "/dist"
     app.directory.viewsDirectory = app.directory.workingDirectory + "/dist"
-    
-    app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 }
 
 private func configureDatabase(_ app: Application) throws {

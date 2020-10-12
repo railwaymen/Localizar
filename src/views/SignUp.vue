@@ -1,8 +1,8 @@
 <template>
-  <div id="login">
+  <div id="sign_up">
     <h1>Sign Up</h1>
 
-    <v-form @submit.prevent="signup">
+    <v-form @submit.prevent="signUp">
       <v-text-field
         v-model="username"
         label="Username"
@@ -27,12 +27,13 @@
 import { apiClient } from "../modules/apiClient";
 
 export default {
+  name: "sign_up",
   data: () => ({
     username: "",
     password: "",
   }),
   methods: {
-    signup() {
+    signUp() {
       const username = this.username;
       const password = this.password;
       apiClient

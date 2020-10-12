@@ -1,5 +1,6 @@
 import Vapor
 import Fluent
+import ModelValidator
 
 final class UserModel: Model, Authenticatable {
     static let schema: String = "users"
@@ -23,7 +24,6 @@ final class UserModel: Model, Authenticatable {
     }
     
     init(_ model: CreateModel) throws {
-        // TODO: Validate the model
         self.username = model.username
         self.password = try Bcrypt.hash(model.password)
     }
@@ -36,8 +36,41 @@ extension UserModel {
         static var password: FieldKey { "password" }
     }
     
-    struct CreateModel: Decodable {
+    struct CreateModel: Decodable, ModelValidator.Validatable {
+        typealias ValidationError = UserModel.ValidationError
+        
         let username: String
         let password: String
+        
+        func validations(validations: inout ModelValidator.Validations<UserModel.CreateModel>) {
+            validations.add(\.username, .count(4...), error: .usernameIsTooShort)
+            validations.add(\.username) { username in
+                guard !CharacterSet.alphanumerics.isSuperset(of: CharacterSet(charactersIn: username)) else { return nil }
+                return .usernameIsNotAlphanumeric
+            }
+            validations.add(\.password, .count(8...), error: .passwordIsTooShort)
+        }
+    }
+    
+    enum ValidationError: CustomValidationError {
+        case usernameIsTooShort
+        case usernameIsNotAlphanumeric
+        case usernameAlreadyExists
+        
+        case passwordIsTooShort
+        
+        var key: String {
+            switch self {
+            case .usernameIsTooShort:
+                return "usernameIsTooShort"
+            case .usernameIsNotAlphanumeric:
+                return "usernameIsNotAlphanumeric"
+            case .usernameAlreadyExists:
+                return "usernameAlreadyExists"
+                
+            case .passwordIsTooShort:
+                return "passwordIsTooShort"
+            }
+        }
     }
 }

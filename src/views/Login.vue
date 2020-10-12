@@ -1,8 +1,8 @@
 <template>
-  <div id="login">
+  <div id="log_in">
     <h1>Log in</h1>
 
-    <v-form @submit.prevent="login">
+    <v-form @submit.prevent="logIn">
       <v-text-field
         v-model="username"
         label="Username"
@@ -31,7 +31,7 @@ export default {
     password: "",
   }),
   methods: {
-    login() {
+    logIn() {
       const username = this.username;
       const password = this.password;
       this.$store

@@ -16,8 +16,15 @@ final class UsersController {
     
     func register(_ req: Request) throws -> EventLoopFuture<Response> {
         let userData = try req.content.decode(UserModel.CreateModel.self)
-        return try UserModel(userData)
-            .save(on: req.db)
+        try userData.validate()
+        let newUser = try UserModel(userData)
+        return UserModel.query(on: req.db)
+            .filter(\.$username == userData.username)
+            .first()
+            .guard({ $0 == nil }, else: UserModel.ValidationError.usernameAlreadyExists)
+            .flatMap { _ in
+                newUser.save(on: req.db)
+            }
             .flatMap {
                 let response = Response(status: .ok)
                 return response.encodeResponse(for: req)
