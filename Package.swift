@@ -7,9 +7,10 @@ let package = Package(
        .macOS(.v10_15)
     ],
     dependencies: [
-        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
-        .package(url: "https://github.com/vapor/fluent.git", from: "4.0.0"),
-        .package(url: "https://github.com/vapor/fluent-postgres-driver.git", from: "2.0.0")
+        .package(url: "https://github.com/vapor/vapor.git", .upToNextMajor(from: "4.0.0")),
+        .package(url: "https://github.com/vapor/fluent.git", .upToNextMajor(from: "4.0.0")),
+        .package(url: "https://github.com/vapor/fluent-postgres-driver.git", .upToNextMajor(from: "2.0.0")),
+        .package(url: "https://github.com/railwaymen/ModelValidator.git", .upToNextMajor(from: "1.0.0")),
     ],
     targets: [
         .target(
@@ -17,7 +18,8 @@ let package = Package(
             dependencies: [
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
-                .product(name: "Vapor", package: "vapor")
+                .product(name: "Vapor", package: "vapor"),
+                .product(name: "ModelValidator", package: "ModelValidator"),
             ],
             swiftSettings: [
                 // Enable better optimizations when building in Release configuration. Despite the use of

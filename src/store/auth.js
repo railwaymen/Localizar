@@ -1,12 +1,12 @@
 import { apiClient } from '@/modules/apiClient'
 import { storageKey } from '@/modules/storageKey'
 
-export const AUTH_REQUEST = 'AUTH_REQUEST'
-export const AUTH_LOGOUT = 'AUTH_LOGOUT'
-export const AUTH_SUCCESS = 'AUTH_SUCCESS'
-export const AUTH_ERROR = 'AUTH_ERROR'
+const AUTH_REQUEST = 'AUTH_REQUEST'
+const AUTH_LOGOUT = 'AUTH_LOGOUT'
+const AUTH_SUCCESS = 'AUTH_SUCCESS'
+const AUTH_ERROR = 'AUTH_ERROR'
 
-export const USER_REQUEST = 'USER_REQUEST'
+const USER_REQUEST = 'USER_REQUEST'
 
 export const authModule = {
     namespaced: true,
@@ -22,7 +22,7 @@ export const authModule = {
         [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
             return new Promise((resolve, reject) => {
                 commit(AUTH_REQUEST)
-                apiClient.post('/v1/sessions', user)
+                apiClient.post('/sessions', user)
                     .then(response => {
                         const token = response.data.token
                         apiClient.setToken(token)

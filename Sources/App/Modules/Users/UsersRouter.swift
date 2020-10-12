@@ -6,5 +6,6 @@ struct UsersRouter: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let routesV1 = routes.grouped("v1")
         routesV1.post("sessions", use: controller.login)
+        routesV1.post("users", use: controller.register)
     }
 }
