@@ -1,10 +1,13 @@
 <template>
   <div id="login">
-    <v-form>
+    <h1>Sign Up</h1>
+
+    <v-form @submit.prevent="signup">
       <v-text-field
         v-model="username"
         label="Username"
         id="username"
+        autocomplete="username"
       ></v-text-field>
 
       <v-text-field
@@ -12,9 +15,10 @@
         label="Password"
         id="password"
         type="password"
+        autocomplete="new-password"
       ></v-text-field>
 
-      <v-btn color="success" id="submit" @click="signup">Sign up</v-btn>
+      <v-btn color="success" id="submit" type="sumbit">Sign up</v-btn>
     </v-form>
   </div>
 </template>
@@ -34,9 +38,11 @@ export default {
       apiClient
         .post("/users", { username, password })
         .then(() => {
-          this.$store.dispatch("AUTH_REQUEST").then(() => {
-            this.$router.push("/login");
-          });
+          this.$store
+            .dispatch("auth/AUTH_REQUEST", { username, password })
+            .then(() => {
+              this.$router.push({ name: "home" });
+            });
         })
         .catch((error) => {
           console.log(error);

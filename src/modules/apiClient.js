@@ -1,11 +1,11 @@
 import axios from 'axios'
-import router from '../router'
-import store from '../store'
+import router from '@/router'
+import store from '@/store'
 import { storageKey } from './storageKey'
-import { coreBackendHost } from '../config'
+import { coreBackendHost } from '@/config'
 
 const initClient = () => {
-  const getBaseURL = () => coreBackendHost || ''
+  const getBaseURL = () => [coreBackendHost || '', 'v1'].join("/")
   const getToken = () => localStorage.getItem(storageKey.userToken)
 
   const client = axios.create()
@@ -32,7 +32,7 @@ const initClient = () => {
     (error) => {
       switch (error.response.status) {
         case 401:
-          store.dispatch('AUTH_LOGOUT')
+          store.dispatch('auth/AUTH_LOGOUT')
           router.push('/log_in')
           break
         default:

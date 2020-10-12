@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '../store'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -9,7 +9,7 @@ const ifNotAuthenticated = (_to, _from, next) => {
     next()
     return
   }
-  next('/')
+  next({ name: 'home' })
 }
 
 const ifAuthenticated = (_to, _from, next) => {
@@ -17,7 +17,7 @@ const ifAuthenticated = (_to, _from, next) => {
     next()
     return
   }
-  next('/log_in')
+  next({ name: 'log_in' })
 }
 
 const routes = [

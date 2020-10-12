@@ -1,6 +1,8 @@
 <template>
   <div id="login">
-    <v-form>
+    <h1>Log in</h1>
+
+    <v-form @submit.prevent="login">
       <v-text-field
         v-model="username"
         label="Username"
@@ -16,7 +18,7 @@
         autocomplete="current-password"
       ></v-text-field>
 
-      <v-btn color="success" id="submit" @click="login">Submit</v-btn>
+      <v-btn color="success" id="submit" type="submit">Submit</v-btn>
     </v-form>
   </div>
 </template>
@@ -35,7 +37,7 @@ export default {
       this.$store
         .dispatch("auth/AUTH_REQUEST", { username, password })
         .then(() => {
-          this.$router.push("/");
+          this.$router.push({ name: "home" });
         });
     },
   },
