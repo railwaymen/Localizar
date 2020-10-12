@@ -13,4 +13,14 @@ final class UsersController {
                 return response.encodeResponse(for: req)
             }
     }
+    
+    func register(_ req: Request) throws -> EventLoopFuture<Response> {
+        let userData = try req.content.decode(UserModel.CreateModel.self)
+        return try UserModel(userData)
+            .save(on: req.db)
+            .flatMap {
+                let response = Response(status: .ok)
+                return response.encodeResponse(for: req)
+            }
+    }
 }

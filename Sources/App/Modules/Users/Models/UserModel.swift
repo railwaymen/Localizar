@@ -21,6 +21,12 @@ final class UserModel: Model, Authenticatable {
         self.username = username
         self.password = password
     }
+    
+    init(_ model: CreateModel) throws {
+        // TODO: Validate the model
+        self.username = model.username
+        self.password = try Bcrypt.hash(model.password)
+    }
 }
 
 // MARK: - Structures
@@ -28,5 +34,10 @@ extension UserModel {
     struct FieldKeys {
         static var username: FieldKey { "username" }
         static var password: FieldKey { "password" }
+    }
+    
+    struct CreateModel: Decodable {
+        let username: String
+        let password: String
     }
 }
