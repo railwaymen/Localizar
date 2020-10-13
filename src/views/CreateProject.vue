@@ -12,11 +12,12 @@
               ref="name"
               v-model="name"
               autocomplete="off"
+              class="form-input"
               :rules="[rules.required]"
               :error-messages="nameErrorMessage"
             ></v-text-field>
 
-            <v-btn type="submit" style="margin-top: 8px">Create</v-btn>
+            <v-btn type="submit" class="form-submit">Create</v-btn>
           </v-form>
         </div>
       </v-col>
@@ -30,7 +31,6 @@ import { apiClient } from "@/modules/apiClient";
 
 const nameValidationErrors = {
   projectNameAlreadyExists: "The project name already exists.",
-  projectNameTooShort: "The project name is too short.",
 };
 
 export default {
@@ -56,7 +56,6 @@ export default {
   validations: {
     name: {
       required,
-      minLength: minLength(4),
     },
   },
   methods: {

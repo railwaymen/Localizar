@@ -1,30 +1,46 @@
 <template>
   <div id="sign_up">
-    <h1>Sign Up</h1>
+    <v-container fluid>
+      <v-row justify="center" class="text-center">
+        <v-col md="5">
+          <div class="form-container">
+            <h1>Sign Up</h1>
 
-    <v-form @submit.prevent="signUp">
-      <v-text-field
-        v-model="username"
-        label="Username"
-        id="username"
-        autocomplete="username"
-        :error-messages="usernameErrorMessage"
-        :rules="[rules.usernameMinLength]"
-        counter
-      ></v-text-field>
+            <v-form @submit.prevent="signUp">
+              <v-text-field
+                v-model="username"
+                label="Username"
+                id="username"
+                autocomplete="username"
+                class="form-input"
+                :error-messages="usernameErrorMessage"
+                :rules="[rules.usernameMinLength]"
+                counter
+              ></v-text-field>
 
-      <v-text-field
-        v-model="password"
-        label="Password"
-        id="password"
-        type="password"
-        autocomplete="new-password"
-        :rules="[rules.passwordMinLength]"
-        counter
-      ></v-text-field>
+              <v-text-field
+                v-model="password"
+                label="Password"
+                id="password"
+                type="password"
+                autocomplete="new-password"
+                class="form-input"
+                :rules="[rules.passwordMinLength]"
+                counter
+              ></v-text-field>
 
-      <v-btn color="success" id="submit" type="sumbit">Sign up</v-btn>
-    </v-form>
+              <v-btn
+                color="success"
+                id="submit"
+                type="sumbit"
+                class="form-submit"
+                >Sign up</v-btn
+              >
+            </v-form>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 

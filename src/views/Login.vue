@@ -1,9 +1,9 @@
 <template>
   <div id="log_in">
     <v-container fluid>
-      <v-row justify="center">
+      <v-row justify="center" class="text-center">
         <v-col md="5">
-          <div id="form-container">
+          <div class="form-container">
             <h1>Log in</h1>
 
             <v-form @submit.prevent="logIn">
@@ -12,6 +12,7 @@
                 label="Username"
                 id="username"
                 autocomplete="current-login"
+                class="form-input"
                 :rules="[rules.required]"
               ></v-text-field>
 
@@ -21,6 +22,7 @@
                 id="password"
                 type="password"
                 autocomplete="current-password"
+                class="form-input"
                 :rules="[rules.required]"
               ></v-text-field>
 
@@ -35,7 +37,13 @@
                 sure you have Caps Lock turned off.
               </v-alert>
 
-              <v-btn color="success" id="submit" type="submit">Submit</v-btn>
+              <v-btn
+                color="success"
+                id="submit"
+                type="submit"
+                class="form-submit"
+                >Submit</v-btn
+              >
             </v-form>
           </div>
         </v-col>
@@ -99,13 +107,3 @@ export default {
   },
 };
 </script>
-
-<style>
-#form-container {
-  -webkit-box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.3);
-  padding: 48px;
-  border-radius: 12px;
-}
-</style>

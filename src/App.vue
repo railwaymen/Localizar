@@ -86,4 +86,13 @@ export default {
   padding: 48px;
   border-radius: 12px;
 }
+
+.form-input {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.form-submit {
+  margin-top: 16px;
+}
 </style>
