@@ -13,7 +13,6 @@
             autocomplete="off"
             :rules="[rules.required]"
             :error-messages="nameErrorMessage"
-            required
           ></v-text-field>
 
           <v-btn type="submit" style="margin-top: 8px">Create</v-btn>
@@ -24,7 +23,8 @@
 </template>
 
 <script>
-import { apiClient } from "../modules/apiClient";
+import { required, minLength } from "vuelidate/lib/validators";
+import { apiClient } from "@/modules/apiClient";
 
 const nameValidationErrors = {
   projectNameAlreadyExists: "The project name already exists.",
@@ -35,7 +35,6 @@ export default {
   data: () => ({
     name: "",
     nameErrorMessage: "",
-    formHasErrors: false,
     rules: {
       required: (value) => !!value || "Required",
     },
@@ -52,15 +51,16 @@ export default {
       this.nameErrorMessage = "";
     },
   },
+  validations: {
+    name: {
+      required,
+      minLength: minLength(4),
+    },
+  },
   methods: {
     createProject() {
-      this.formHasErrors = false;
-      Object.keys(this.form).forEach((f) => {
-        if (!this.form[f]) this.formHasErrors = true;
-        this.$refs[f].validate(true);
-      });
-
-      if (this.formHasErrors) return;
+      this.$v.$touch();
+      if (this.$v.$invalid) return;
 
       apiClient
         .post("/projects", this.form)
