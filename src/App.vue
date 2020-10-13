@@ -1,24 +1,16 @@
 <template>
   <v-app>
     <v-app-bar app dark>
-      <v-toolbar-title>Localizar</v-toolbar-title>
-
-      <v-spacer></v-spacer>
+      <v-toolbar-title id="app_title">Localizar</v-toolbar-title>
 
       <v-btn :to="{ name: 'home' }" class="nav-btn" exact>Home</v-btn>
       <v-btn :to="{ name: 'about' }" class="nav-btn" exact>About</v-btn>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        :to="{ name: 'projects' }"
-        class="nav-btn"
-        v-if="isAuthenticated"
-        exact
-      >
+      <v-btn :to="{ name: 'projects' }" class="nav-btn" v-if="isAuthenticated">
         Projects
       </v-btn>
-
       <v-btn
         color="error"
         class="nav-btn"
@@ -78,5 +70,12 @@ export default {
 .nav-btn {
   margin-left: 4px;
   margin-right: 4px;
+}
+
+#app_title {
+  margin-left: 8px;
+  margin-right: 24px;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 </style>

@@ -50,6 +50,7 @@ private func configureDatabase(_ app: Application) throws {
 private func configureModules(_ app: Application) throws {
     let modules: [Module] = [
         FrontendModule(),
+        ProjectsModule(),
         UsersModule(),
     ]
     
