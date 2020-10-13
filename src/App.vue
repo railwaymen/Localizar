@@ -8,15 +8,9 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        :to="{ name: 'projects' }"
-        class="nav-btn"
-        v-if="isAuthenticated"
-        exact
-      >
+      <v-btn :to="{ name: 'projects' }" class="nav-btn" v-if="isAuthenticated">
         Projects
       </v-btn>
-
       <v-btn
         color="error"
         class="nav-btn"

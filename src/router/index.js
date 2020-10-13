@@ -50,7 +50,7 @@ const routes = [
     beforeEnter: ifAuthenticated,
   },
   {
-    path: '/project/create',
+    path: '/projects/create',
     name: 'create_project',
     component: () => import('@/views/CreateProject.vue'),
     beforeEnter: ifAuthenticated,
