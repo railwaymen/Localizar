@@ -5,7 +5,7 @@ final class UsersController {
     func login(_ req: Request) throws -> EventLoopFuture<Response> {
         UserCredentialsAuthenticator()
             .authenticate(req: req)
-            .guard({ _ in req.auth.has(UserModel.self) }, else: Abort(.unauthorized))
+            .guard({ _ in req.auth.has(UserModel.self) }, else: Abort(.unprocessableEntity))
             .flatMapThrowing { try $0.apiModel() }
             .flatMapThrowing { try JSONEncoder().encode($0) }
             .flatMap { tokenData in

@@ -78,4 +78,12 @@ export default {
   font-weight: bold;
   font-size: 1.5rem;
 }
+
+.form-container {
+  -webkit-box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.3);
+  padding: 48px;
+  border-radius: 12px;
+}
 </style>

@@ -1,22 +1,24 @@
 <template>
   <v-container>
-    <v-row class="text-center">
-      <v-col md="4" offset-md="4">
-        <h1>Create a Project</h1>
+    <v-row justify="center" class="text-center">
+      <v-col md="5">
+        <div class="form-container">
+          <h1>Create a Project</h1>
 
-        <v-form @submit.prevent="createProject">
-          <v-text-field
-            type="text"
-            label="Project Name"
-            ref="name"
-            v-model="name"
-            autocomplete="off"
-            :rules="[rules.required]"
-            :error-messages="nameErrorMessage"
-          ></v-text-field>
+          <v-form @submit.prevent="createProject">
+            <v-text-field
+              type="text"
+              label="Project Name"
+              ref="name"
+              v-model="name"
+              autocomplete="off"
+              :rules="[rules.required]"
+              :error-messages="nameErrorMessage"
+            ></v-text-field>
 
-          <v-btn type="submit" style="margin-top: 8px">Create</v-btn>
-        </v-form>
+            <v-btn type="submit" style="margin-top: 8px">Create</v-btn>
+          </v-form>
+        </div>
       </v-col>
     </v-row>
   </v-container>

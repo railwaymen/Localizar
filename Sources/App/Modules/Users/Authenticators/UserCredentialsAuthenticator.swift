@@ -8,10 +8,10 @@ struct UserCredentialsAuthenticator {
             return UserModel.query(on: req.db)
                 .filter(\.$username, .equal, credentials.username)
                 .first()
-                .unwrap(or: Abort(.notFound))
+                .unwrap(or: Abort(.unprocessableEntity))
                 .flatMapThrowing { user throws -> UserModel.IDValue in
                     guard try Bcrypt.verify(credentials.password, created: user.password) else {
-                        throw Abort(.unauthorized)
+                        throw Abort(.unprocessableEntity)
                     }
                     req.auth.login(user)
                     return try user.requireID()
