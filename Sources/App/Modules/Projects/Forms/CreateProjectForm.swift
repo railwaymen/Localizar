@@ -27,6 +27,10 @@ struct CreateProjectForm: Form {
             .unwrap(orElse: { firstValidationError() })
     }
     
+}
+
+// MARK: - Private
+extension CreateProjectForm {
     private func firstValidationError() -> ValidationError? {
         guard !name.isEmpty else { return .projectNameTooShort }
         return nil
@@ -34,7 +38,10 @@ struct CreateProjectForm: Form {
 }
 
 // MARK: - Structures
+
 extension CreateProjectForm {
+    
+    // MARK: ValidationError
     enum ValidationError: CustomValidationError {
         case projectNameAlreadyExists
         case projectNameTooShort
@@ -49,6 +56,7 @@ extension CreateProjectForm {
         }
     }
     
+    // MARK: Input
     private struct Input: Decodable {
         let name: String
     }

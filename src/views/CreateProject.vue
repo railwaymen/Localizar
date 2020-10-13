@@ -8,11 +8,15 @@
           <v-text-field
             type="text"
             label="Project Name"
-            v-model="projectName"
+            ref="name"
+            v-model="name"
             autocomplete="off"
+            :rules="[rules.required]"
+            :error-messages="nameErrorMessage"
+            required
           ></v-text-field>
 
-          <v-btn type="submit">Create</v-btn>
+          <v-btn type="submit" style="margin-top: 8px">Create</v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -22,20 +26,51 @@
 <script>
 import { apiClient } from "../modules/apiClient";
 
+const nameValidationErrors = {
+  projectNameAlreadyExists: "The project name already exists.",
+  projectNameTooShort: "The project name is too short.",
+};
+
 export default {
   data: () => ({
-    projectName: "",
+    name: "",
+    nameErrorMessage: "",
+    formHasErrors: false,
+    rules: {
+      required: (value) => !!value || "Required",
+    },
   }),
+  computed: {
+    form() {
+      return {
+        name: this.name,
+      };
+    },
+  },
+  watch: {
+    name() {
+      this.nameErrorMessage = "";
+    },
+  },
   methods: {
     createProject() {
-      const name = this.projectName;
+      this.formHasErrors = false;
+      Object.keys(this.form).forEach((f) => {
+        if (!this.form[f]) this.formHasErrors = true;
+        this.$refs[f].validate(true);
+      });
+
+      if (this.formHasErrors) return;
+
       apiClient
-        .post("/projects", { name })
+        .post("/projects", this.form)
         .then(() => {
           this.$router.push({ name: "projects" });
         })
         .catch((error) => {
-          console.log(error);
+          if (error.response.status != 422) return;
+          this.nameErrorMessage =
+            nameValidationErrors[error.response.data.reason] || "";
         });
     },
   },
