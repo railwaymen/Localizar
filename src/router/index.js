@@ -48,6 +48,12 @@ const routes = [
     name: 'projects',
     component: () => import('@/views/Projects.vue'),
     beforeEnter: ifAuthenticated,
+  },
+  {
+    path: '/project/create',
+    name: 'create_project',
+    component: () => import('@/views/CreateProject.vue'),
+    beforeEnter: ifAuthenticated,
   }
 ]
 
