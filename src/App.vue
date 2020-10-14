@@ -3,13 +3,17 @@
     <v-app-bar app dark>
       <v-toolbar-title id="app_title">Localizar</v-toolbar-title>
 
-      <v-btn :to="{ name: 'home' }" class="nav-btn" exact>Home</v-btn>
-      <v-btn :to="{ name: 'about' }" class="nav-btn" exact>About</v-btn>
+      <v-btn :to="{ name: 'home' }" class="nav-btn" exact>
+        {{ $t("navbar_btn.home") }}
+      </v-btn>
+      <v-btn :to="{ name: 'about' }" class="nav-btn" exact>
+        {{ $t("navbar_btn.about") }}
+      </v-btn>
 
       <v-spacer></v-spacer>
 
       <v-btn :to="{ name: 'projects' }" class="nav-btn" v-if="isAuthenticated">
-        Projects
+        {{ $t("navbar_btn.projects") }}
       </v-btn>
       <v-btn
         color="error"
@@ -18,7 +22,7 @@
         @click="logout"
         exact
       >
-        Log out
+        {{ $t("navbar_btn.log_out") }}
       </v-btn>
 
       <v-btn
@@ -28,7 +32,7 @@
         v-if="!isAuthenticated"
         exact
       >
-        Sign up
+        {{ $t("navbar_btn.sign_up") }}
       </v-btn>
       <v-btn
         :to="{ name: 'log_in' }"
@@ -37,7 +41,7 @@
         v-if="!isAuthenticated"
         exact
       >
-        Log in
+        {{ $t("navbar_btn.log_in") }}
       </v-btn>
     </v-app-bar>
 

@@ -4,12 +4,12 @@
       <v-row justify="center" class="text-center">
         <v-col md="5">
           <div class="form-container">
-            <h1>Log in</h1>
+            <h1>{{ $t("log_in.title") }}</h1>
 
             <v-form @submit.prevent="logIn">
               <v-text-field
                 v-model="username"
-                label="Username"
+                :label="$t('log_in.textfield.username_placeholder')"
                 id="username"
                 autocomplete="current-login"
                 class="form-input"
@@ -18,7 +18,7 @@
 
               <v-text-field
                 v-model="password"
-                label="Password"
+                :label="$t('log_in.textfield.password_placeholder')"
                 id="password"
                 type="password"
                 autocomplete="current-password"
@@ -33,8 +33,7 @@
                 transition="scale-transition"
               >
                 <v-icon style="margin-right: 8px">mdi-alert</v-icon>
-                The provided username and password combination is invalid. Make
-                sure you have Caps Lock turned off.
+                {{ $t("log_in.error.credentials_not_matching") }}
               </v-alert>
 
               <v-btn
@@ -42,8 +41,9 @@
                 id="submit"
                 type="submit"
                 class="form-submit"
-                >Submit</v-btn
               >
+                {{ $t("log_in.button.submit") }}
+              </v-btn>
             </v-form>
           </div>
         </v-col>
@@ -54,6 +54,9 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
+import i18n from "@/i18n";
+
+const requiredMessage = i18n.t("generic.error.field_required");
 
 export default {
   name: "log_in",
@@ -62,7 +65,7 @@ export default {
     password: "",
     areCredentialsValid: true,
     rules: {
-      required: (value) => !!value || "Required",
+      required: (value) => !!value || requiredMessage,
     },
   }),
   validations: {
