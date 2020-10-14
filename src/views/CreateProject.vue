@@ -29,7 +29,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import { apiClient } from "@/modules/apiClient";
+import apiClient from "@/modules/apiClient";
 import i18n from "@/i18n";
 
 const nameValidationErrors = {
@@ -71,7 +71,7 @@ export default {
       if (this.$v.$invalid) return;
 
       apiClient
-        .post("/projects", this.form)
+        .createProject(this.form)
         .then(() => {
           this.$router.push({ name: "projects" });
         })
