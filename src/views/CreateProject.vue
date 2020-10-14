@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { required, minLength } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import { apiClient } from "@/modules/apiClient";
 
 const nameValidationErrors = {
