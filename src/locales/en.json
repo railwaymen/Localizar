@@ -1,0 +1,61 @@
+{
+  "navbar_btn": {
+    "about": "About",
+    "home": "Home",
+    "projects": "Projects",
+    "log_out": "Log out",
+    "sign_up": "Sign up",
+    "log_in": "Log in"
+  },
+  "sign_up": {
+    "title": "Sign up",
+    "textfield": {
+      "username_placeholder": "Username",
+      "password_placeholder": "Password"
+    },
+    "button": {
+      "submit": "Sign up"
+    },
+    "error": {
+      "minimum_length": "Minimum {count} characters.",
+      "username_is_not_alphanumeric": "The username should contain only letters and numbers.",
+      "username_already_exists": "The username already exists."
+    }
+  },
+  "log_in": {
+    "title": "Log in",
+    "textfield": {
+      "username_placeholder": "Username",
+      "password_placeholder": "Password"
+    },
+    "button": {
+      "submit": "Log in"
+    },
+    "error": {
+      "credentials_not_matching": "The provided username and password combination is invalid. Make sure you have Caps Lock turned off."
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "button": {
+      "create_new": "Create a new project"
+    }
+  },
+  "create_project": {
+    "title": "Create a Project",
+    "textfield": {
+      "name_placeholder": "Project Name"
+    },
+    "button": {
+      "submit": "Create"
+    },
+    "error": {
+      "project_name_already_exists": "The project name already exists."
+    }
+  },
+  "generic": {
+    "error": {
+      "field_required": "Required"
+    }
+  }
+}

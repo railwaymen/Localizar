@@ -3,12 +3,12 @@
     <v-row justify="center" class="text-center">
       <v-col md="5">
         <div class="form-container">
-          <h1>Create a Project</h1>
+          <h1>{{ $t("create_project.title") }}</h1>
 
           <v-form @submit.prevent="createProject">
             <v-text-field
               type="text"
-              label="Project Name"
+              :label="$t('create_project.textfield.name_placeholder')"
               ref="name"
               v-model="name"
               autocomplete="off"
@@ -17,7 +17,9 @@
               :error-messages="nameErrorMessage"
             ></v-text-field>
 
-            <v-btn type="submit" class="form-submit">Create</v-btn>
+            <v-btn type="submit" class="form-submit">{{
+              $t("create_project.button.submit")
+            }}</v-btn>
           </v-form>
         </div>
       </v-col>
@@ -26,19 +28,24 @@
 </template>
 
 <script>
-import { required, minLength } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import { apiClient } from "@/modules/apiClient";
+import i18n from "@/i18n";
 
 const nameValidationErrors = {
-  projectNameAlreadyExists: "The project name already exists.",
+  projectNameAlreadyExists: i18n.t(
+    "create_project.error.project_name_already_exists"
+  ),
 };
+
+const requiredMessage = i18n.t("generic.error.field_required");
 
 export default {
   data: () => ({
     name: "",
     nameErrorMessage: "",
     rules: {
-      required: (value) => !!value || "Required",
+      required: (value) => !!value || requiredMessage,
     },
   }),
   computed: {

@@ -4,12 +4,12 @@
       <v-row justify="center" class="text-center">
         <v-col md="5">
           <div class="form-container">
-            <h1>Sign Up</h1>
+            <h1>{{ $t("sign_up.title") }}</h1>
 
             <v-form @submit.prevent="signUp">
               <v-text-field
                 v-model="username"
-                label="Username"
+                :label="$t('sign_up.textfield.username_placeholder')"
                 id="username"
                 autocomplete="username"
                 class="form-input"
@@ -20,7 +20,7 @@
 
               <v-text-field
                 v-model="password"
-                label="Password"
+                :label="$t('sign_up.textfield.password_placeholder')"
                 id="password"
                 type="password"
                 autocomplete="new-password"
@@ -34,8 +34,9 @@
                 id="submit"
                 type="sumbit"
                 class="form-submit"
-                >Sign up</v-btn
               >
+                {{ $t("sign_up.button.submit") }}
+              </v-btn>
             </v-form>
           </div>
         </v-col>
@@ -47,15 +48,24 @@
 <script>
 import { required, minLength } from "vuelidate/lib/validators";
 import { apiClient } from "../modules/apiClient";
+import i18n from "@/i18n";
 
 const usernameValidationErrors = {
-  usernameIsNotAlphanumeric:
-    "The username should contain only letters and numbers.",
-  usernameAlreadyExists: "The username already exists.",
+  usernameIsNotAlphanumeric: i18n.t(
+    "sign_up.error.username_is_not_alphanumeric"
+  ),
+  usernameAlreadyExists: i18n.t("sign_up.error.username_already_exists"),
 };
 
 const usernameMinLength = 4;
 const passwordMinLength = 8;
+
+const usernameMinLengthMessage = i18n.t("sign_up.error.minimum_length", {
+  count: usernameMinLength.toString(),
+});
+const passwordMinLengthMessage = i18n.t("sign_up.error.minimum_length", {
+  count: passwordMinLength.toString(),
+});
 
 export default {
   name: "sign_up",
@@ -66,10 +76,10 @@ export default {
     rules: {
       usernameMinLength: (value) =>
         (!!value && value.length >= usernameMinLength) ||
-        "Minimum " + usernameMinLength + " characters",
+        usernameMinLengthMessage,
       passwordMinLength: (value) =>
         (!!value && value.length >= passwordMinLength) ||
-        "Minimum " + passwordMinLength + " characters",
+        passwordMinLengthMessage,
     },
   }),
   validations: {
