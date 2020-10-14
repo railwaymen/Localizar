@@ -5,8 +5,6 @@ const AUTH_LOGOUT = 'AUTH_LOGOUT'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const AUTH_ERROR = 'AUTH_ERROR'
 
-const USER_REQUEST = 'USER_REQUEST'
-
 export const authModule = {
     namespaced: true,
     state: {
@@ -18,7 +16,7 @@ export const authModule = {
         authStatus: state => state.status,
     },
     actions: {
-        [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
+        [AUTH_REQUEST]: ({ commit }, user) => {
             return new Promise((resolve, reject) => {
                 commit(AUTH_REQUEST)
                 apiClient.logIn(user)
@@ -26,7 +24,6 @@ export const authModule = {
                         const token = response.data.token
                         apiClient.setToken(token)
                         commit(AUTH_SUCCESS, token)
-                        dispatch(USER_REQUEST)
                         resolve(response)
                     })
                     .catch(error => {

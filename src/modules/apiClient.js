@@ -1,5 +1,10 @@
 import networking from './networking'
-import Endpoint from './endpoint'
+
+const Endpoint = {
+  sessions: '/sessions',
+  projects: '/projects',
+  users: '/users'
+}
 
 class ApiClient {
   getToken() {
@@ -20,6 +25,10 @@ class ApiClient {
 
   logIn(form) {
     return networking.post(Endpoint.sessions, form)
+  }
+
+  getProjects() {
+    return networking.get(Endpoint.projects)
   }
 
   createProject(form) {

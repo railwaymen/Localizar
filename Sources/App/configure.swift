@@ -54,7 +54,7 @@ private func configureModules(_ app: Application) throws {
         UsersModule(),
     ]
     
-    app.migrations.add(modules.flatMap { $0.migrations })
+    app.migrations.add(ModelsMigrations.all)
     try modules.forEach {
         try $0.router.boot(routes: app.routes)
     }

@@ -15,9 +15,9 @@
             <v-data-table
               :headers="headers"
               :items="projects"
+              :loading="loading"
               @click:row="rowClicked"
-            >
-            </v-data-table>
+            ></v-data-table>
           </div>
         </v-col>
       </v-row>
@@ -27,15 +27,33 @@
 
 <script>
 import i18n from "@/i18n";
+import apiClient from "@/modules/apiClient";
 
 export default {
   data: () => ({
+    loading: true,
     headers: [
       { text: i18n.t("projects.table_headers.project_name"), value: "name" },
     ],
-    projects: [{ name: "Yes", slug: "yes" }],
+    projects: [],
   }),
+  mounted() {
+    this.loadData();
+  },
   methods: {
+    loadData() {
+      this.loading = true;
+      apiClient
+        .getProjects()
+        .then((response) => {
+          this.projects = response.data;
+          this.loading = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.loading = false;
+        });
+    },
     rowClicked(project) {
       this.$router.push({
         name: "project_panel",

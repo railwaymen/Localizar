@@ -36,6 +36,7 @@ const nameValidationErrors = {
   projectNameAlreadyExists: i18n.t(
     "create_project.error.project_name_already_exists"
   ),
+  slugCouldNotBeGenerated: i18n.t("create_project.error.slug_invalid"),
 };
 
 const requiredMessage = i18n.t("generic.error.field_required");

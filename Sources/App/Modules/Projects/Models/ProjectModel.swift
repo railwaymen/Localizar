@@ -6,6 +6,7 @@ final class ProjectModel: Model {
     
     @ID var id: UUID?
     @Field(key: FieldKeys.name) var name: String
+    @Field(key: FieldKeys.slug) var slug: String?
     
     @Siblings(through: ProjectUserPivot.self, from: \.$project, to: \.$user)
     var users: [UserModel]
@@ -15,10 +16,12 @@ final class ProjectModel: Model {
     
     init(
         id: UUID? = nil,
-        name: String
+        name: String,
+        slug: String
     ) {
         self.id = id
         self.name = name
+        self.slug = slug
     }
 }
 
@@ -26,5 +29,6 @@ final class ProjectModel: Model {
 extension ProjectModel {
     struct FieldKeys {
         static var name: FieldKey { "name" }
+        static var slug: FieldKey { "slug" }
     }
 }

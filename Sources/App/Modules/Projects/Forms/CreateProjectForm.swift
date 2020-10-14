@@ -3,36 +3,52 @@ import Fluent
 
 struct CreateProjectForm: Form {
     var name: String
+    var slug: String
     
     // MARK: - Initialization
     init() {
         self.name = ""
+        self.slug = ""
     }
     
     init(req: Request) throws {
         let input = try req.content.decode(Input.self)
         self.name = input.name
+        self.slug = input.name.convertedToSlug() ?? ""
+    }
+    
+    init(model: ProjectModel) {
+        self.name = model.name
+        self.slug = model.slug!
     }
     
     // MARK: - Internal
-    func createModel() -> ProjectModel {
-        ProjectModel(name: name)
+    func createModel() throws -> ProjectModel {
+        guard !slug.isEmpty else { throw ValidationError.slugCouldNotBeGenerated }
+        return ProjectModel(
+            name: name,
+            slug: slug)
     }
     
     func validate(on database: Database) -> EventLoopFuture<ValidationError?> {
         ProjectModel.query(on: database)
-            .filter(\.$name == name)
+            .filter(\.$slug == slug)
             .first()
             .map { $0 == nil ? nil : ValidationError.projectNameAlreadyExists }
             .unwrap(orElse: { firstValidationError() })
+        
     }
     
+    func output() -> Output {
+        Output(name: name, slug: slug)
+    }
 }
 
 // MARK: - Private
 extension CreateProjectForm {
     private func firstValidationError() -> ValidationError? {
         guard !name.isEmpty else { return .projectNameTooShort }
+        guard !slug.isEmpty else { return .slugCouldNotBeGenerated }
         return nil
     }
 }
@@ -46,12 +62,16 @@ extension CreateProjectForm {
         case projectNameAlreadyExists
         case projectNameTooShort
         
+        case slugCouldNotBeGenerated
+        
         var key: String {
             switch self {
             case .projectNameAlreadyExists:
                 return "projectNameAlreadyExists"
             case .projectNameTooShort:
                 return "projectNameTooShort"
+            case .slugCouldNotBeGenerated:
+                return "slugCouldNotBeGenerated"
             }
         }
     }
@@ -59,5 +79,11 @@ extension CreateProjectForm {
     // MARK: Input
     private struct Input: Decodable {
         let name: String
+    }
+    
+    // MARK: - Output
+    struct Output: Encodable {
+        let name: String
+        let slug: String
     }
 }

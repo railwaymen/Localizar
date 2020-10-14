@@ -53,7 +53,8 @@
       "submit": "Create"
     },
     "error": {
-      "project_name_already_exists": "The project name already exists."
+      "project_name_already_exists": "The project name already exists.",
+      "slug_invalid": "The slug for project name couldn't be generated."
     }
   },
   "generic": {
