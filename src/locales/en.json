@@ -39,6 +39,9 @@
     "title": "Projects",
     "button": {
       "create_new": "Create a new project"
+    },
+    "table_headers": {
+      "project_name": "Project Name"
     }
   },
   "create_project": {
