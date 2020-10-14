@@ -60,6 +60,9 @@ export default {
   computed: {
     ...mapGetters("auth", ["isAuthenticated"]),
   },
+  created() {
+    this.$i18n.locale = navigator.language.split("-")[0];
+  },
   methods: {
     logout() {
       this.$store.dispatch("auth/AUTH_LOGOUT").then(() => {
