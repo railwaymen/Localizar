@@ -1,7 +1,7 @@
 import Vapor
 import Fluent
 
-struct CreateProjectForm: Form {
+struct ProjectForm: InOutForm {
     var name: String
     var slug: String
     
@@ -39,13 +39,13 @@ struct CreateProjectForm: Form {
         
     }
     
-    func output() -> Output {
+    func getOutput() -> Output {
         Output(name: name, slug: slug)
     }
 }
 
 // MARK: - Private
-extension CreateProjectForm {
+extension ProjectForm {
     private func firstValidationError() -> ValidationError? {
         guard !name.isEmpty else { return .projectNameTooShort }
         guard !slug.isEmpty else { return .slugCouldNotBeGenerated }
@@ -55,7 +55,7 @@ extension CreateProjectForm {
 
 // MARK: - Structures
 
-extension CreateProjectForm {
+extension ProjectForm {
     
     // MARK: ValidationError
     enum ValidationError: CustomValidationError {
@@ -81,7 +81,7 @@ extension CreateProjectForm {
         let name: String
     }
     
-    // MARK: - Output
+    // MARK: Output
     struct Output: Encodable {
         let name: String
         let slug: String
