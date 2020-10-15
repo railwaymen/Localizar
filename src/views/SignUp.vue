@@ -47,7 +47,7 @@
 
 <script>
 import { required, minLength } from "vuelidate/lib/validators";
-import { apiClient } from "../modules/apiClient";
+import apiClient from "@/modules/apiClient";
 import i18n from "@/i18n";
 
 const usernameValidationErrors = {
@@ -111,7 +111,7 @@ export default {
       if (this.$v.$invalid) return;
 
       apiClient
-        .post("/users", this.form)
+        .createUser(this.form)
         .then(() => {
           this.$store.dispatch("auth/AUTH_REQUEST", this.form).then(() => {
             this.$router.push({ name: "home" });

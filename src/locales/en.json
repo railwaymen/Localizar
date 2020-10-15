@@ -39,6 +39,9 @@
     "title": "Projects",
     "button": {
       "create_new": "Create a new project"
+    },
+    "table_headers": {
+      "project_name": "Project Name"
     }
   },
   "create_project": {
@@ -50,7 +53,8 @@
       "submit": "Create"
     },
     "error": {
-      "project_name_already_exists": "The project name already exists."
+      "project_name_already_exists": "The project name already exists.",
+      "slug_invalid": "The slug for project name couldn't be generated."
     }
   },
   "generic": {

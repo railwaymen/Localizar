@@ -10,6 +10,9 @@ final class UserModel: Model, Authenticatable {
     @Field(key: FieldKeys.password) var password: String
     @Children(for: \UserTokenModel.$user) var tokens: [UserTokenModel]
     
+    @Siblings(through: ProjectUserPivot.self, from: \.$user, to: \.$project)
+    var projects: [ProjectModel]
+    
     // MARK: - Initialization
     init() {}
     

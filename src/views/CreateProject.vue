@@ -29,13 +29,14 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import { apiClient } from "@/modules/apiClient";
+import apiClient from "@/modules/apiClient";
 import i18n from "@/i18n";
 
 const nameValidationErrors = {
   projectNameAlreadyExists: i18n.t(
     "create_project.error.project_name_already_exists"
   ),
+  slugCouldNotBeGenerated: i18n.t("create_project.error.slug_invalid"),
 };
 
 const requiredMessage = i18n.t("generic.error.field_required");
@@ -71,7 +72,7 @@ export default {
       if (this.$v.$invalid) return;
 
       apiClient
-        .post("/projects", this.form)
+        .createProject(this.form)
         .then(() => {
           this.$router.push({ name: "projects" });
         })

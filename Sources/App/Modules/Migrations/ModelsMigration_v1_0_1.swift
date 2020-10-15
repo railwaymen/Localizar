@@ -1,7 +1,7 @@
 import Vapor
 import Fluent
 
-struct ProjectMigration_v1_0_0: Migration {
+struct ModelsMigration_v1_0_1: Migration {
     func prepare(on database: Database) -> EventLoopFuture<Void> {
         database.eventLoop.flatten([
             database.schema(ProjectModel.schema)
