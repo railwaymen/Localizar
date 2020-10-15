@@ -1,6 +1,8 @@
 import Vapor
 
 struct Locale {
+    static let `default`: Locale = Locale.all.first(where: { $0.id == "en" })!
+    
     static let all: [Locale] = Foundation.Locale
         .availableIdentifiers
         .map {
@@ -16,4 +18,15 @@ struct Locale {
     let id: String
     let nameEN: String
     let nameOriginal: String
+}
+
+// MARK: - Array Extension
+extension Array where Element == Locale {
+    func contains(ids: [String]) -> Bool {
+        ids.allSatisfy { contains(id: $0) }
+    }
+    
+    func contains(id: String) -> Bool {
+        contains(where: { $0.id == id })
+    }
 }

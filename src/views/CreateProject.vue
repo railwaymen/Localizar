@@ -53,6 +53,7 @@ export default {
     form() {
       return {
         name: this.name,
+        mainLocaleID: "en",
       };
     },
   },
