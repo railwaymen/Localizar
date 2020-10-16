@@ -1,25 +1,34 @@
 import Vapor
 import Fluent
 
-struct CreateProjectForm: Form {
+struct ProjectForm: InOutForm {
     var name: String
     var slug: String
+    var mainLocaleID: String
+    var supportedLocalesIDs: [String]
     
     // MARK: - Initialization
     init() {
         self.name = ""
         self.slug = ""
+        self.mainLocaleID = Locale.default.id
+        self.supportedLocalesIDs = [Locale.default.id]
     }
     
     init(req: Request) throws {
         let input = try req.content.decode(Input.self)
-        self.name = input.name
-        self.slug = input.name.convertedToSlug() ?? ""
+        let name = input.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.name = name
+        self.slug = name.convertedToSlug() ?? ""
+        self.mainLocaleID = input.mainLocaleID
+        self.supportedLocalesIDs = [input.mainLocaleID]
     }
     
     init(model: ProjectModel) {
         self.name = model.name
         self.slug = model.slug!
+        self.mainLocaleID = model.mainLocaleID
+        self.supportedLocalesIDs = model.supportedLocalesIDs
     }
     
     // MARK: - Internal
@@ -27,7 +36,9 @@ struct CreateProjectForm: Form {
         guard !slug.isEmpty else { throw ValidationError.slugCouldNotBeGenerated }
         return ProjectModel(
             name: name,
-            slug: slug)
+            slug: slug,
+            mainLocaleID: mainLocaleID,
+            supportedLocalesIDs: supportedLocalesIDs)
     }
     
     func validate(on database: Database) -> EventLoopFuture<ValidationError?> {
@@ -39,23 +50,24 @@ struct CreateProjectForm: Form {
         
     }
     
-    func output() -> Output {
+    func getOutput() -> Output {
         Output(name: name, slug: slug)
     }
 }
 
 // MARK: - Private
-extension CreateProjectForm {
+extension ProjectForm {
     private func firstValidationError() -> ValidationError? {
         guard !name.isEmpty else { return .projectNameTooShort }
         guard !slug.isEmpty else { return .slugCouldNotBeGenerated }
+        guard Locale.all.contains(ids: [mainLocaleID] + supportedLocalesIDs) else { return .localeNotSupported }
         return nil
     }
 }
 
 // MARK: - Structures
 
-extension CreateProjectForm {
+extension ProjectForm {
     
     // MARK: ValidationError
     enum ValidationError: CustomValidationError {
@@ -63,6 +75,8 @@ extension CreateProjectForm {
         case projectNameTooShort
         
         case slugCouldNotBeGenerated
+        
+        case localeNotSupported
         
         var key: String {
             switch self {
@@ -72,6 +86,8 @@ extension CreateProjectForm {
                 return "projectNameTooShort"
             case .slugCouldNotBeGenerated:
                 return "slugCouldNotBeGenerated"
+            case .localeNotSupported:
+                return "localeNotSupported"
             }
         }
     }
@@ -79,9 +95,10 @@ extension CreateProjectForm {
     // MARK: Input
     private struct Input: Decodable {
         let name: String
+        let mainLocaleID: String
     }
     
-    // MARK: - Output
+    // MARK: Output
     struct Output: Encodable {
         let name: String
         let slug: String

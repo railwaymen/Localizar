@@ -7,6 +7,8 @@ final class ProjectModel: Model {
     @ID var id: UUID?
     @Field(key: FieldKeys.name) var name: String
     @Field(key: FieldKeys.slug) var slug: String?
+    @Field(key: FieldKeys.mainLocaleID) var mainLocaleID: String
+    @Field(key: FieldKeys.supportedLocales) var supportedLocalesIDs: [String]
     
     @Siblings(through: ProjectUserPivot.self, from: \.$project, to: \.$user)
     var users: [UserModel]
@@ -17,11 +19,17 @@ final class ProjectModel: Model {
     init(
         id: UUID? = nil,
         name: String,
-        slug: String
+        slug: String,
+        mainLocaleID: String,
+        supportedLocalesIDs: [String]
     ) {
         self.id = id
         self.name = name
         self.slug = slug
+        self.mainLocaleID = mainLocaleID
+        self.supportedLocalesIDs = supportedLocalesIDs.contains(mainLocaleID)
+            ? supportedLocalesIDs
+            : ([mainLocaleID] + supportedLocalesIDs)
     }
 }
 
@@ -30,5 +38,7 @@ extension ProjectModel {
     struct FieldKeys {
         static var name: FieldKey { "name" }
         static var slug: FieldKey { "slug" }
+        static var mainLocaleID: FieldKey { "main_locale" }
+        static var supportedLocales: FieldKey { "supported_locales" }
     }
 }

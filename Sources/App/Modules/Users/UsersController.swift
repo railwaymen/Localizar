@@ -7,11 +7,7 @@ final class UsersController {
             .authenticate(req: req)
             .guard({ _ in req.auth.has(UserModel.self) }, else: Abort(.unprocessableEntity))
             .flatMapThrowing { try $0.apiModel() }
-            .flatMapThrowing { try JSONEncoder().encode($0) }
-            .flatMap { tokenData in
-                let response = Response(status: .ok, body: .init(data: tokenData))
-                return response.encodeResponse(for: req)
-            }
+            .flatMapThrowing { try Response.ok(body: $0) }
     }
     
     func register(_ req: Request) throws -> EventLoopFuture<Response> {
@@ -25,9 +21,6 @@ final class UsersController {
             .flatMap { _ in
                 newUser.save(on: req.db)
             }
-            .flatMap {
-                let response = Response(status: .ok)
-                return response.encodeResponse(for: req)
-            }
+            .map { Response.noContent() }
     }
 }

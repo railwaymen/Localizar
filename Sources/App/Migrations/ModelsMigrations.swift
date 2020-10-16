@@ -6,5 +6,6 @@ struct ModelsMigrations {
         ModelsMigration_v1_0_0(),
         ModelsMigration_v1_0_1(),
         ModelsMigration_v1_0_2(),
+        ModelsMigration_v1_0_3(),
     ] }
 }

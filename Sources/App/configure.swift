@@ -52,10 +52,11 @@ private func configureModules(_ app: Application) throws {
         FrontendModule(),
         ProjectsModule(),
         UsersModule(),
+        LocaleModule(),
     ]
     
     app.migrations.add(ModelsMigrations.all)
     try modules.forEach {
-        try $0.router.boot(routes: app.routes)
+        try app.routes.register(collection: $0.router)
     }
 }

@@ -47,7 +47,8 @@
   "create_project": {
     "title": "Create a Project",
     "textfield": {
-      "name_placeholder": "Project Name"
+      "name_placeholder": "Project Name",
+      "main_locale_label": "Main Locale"
     },
     "button": {
       "submit": "Create"

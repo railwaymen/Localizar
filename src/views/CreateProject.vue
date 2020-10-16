@@ -17,9 +17,21 @@
               :error-messages="nameErrorMessage"
             ></v-text-field>
 
-            <v-btn type="submit" class="form-submit">{{
-              $t("create_project.button.submit")
-            }}</v-btn>
+            <v-autocomplete
+              v-model="selectedLocale"
+              :items="locales"
+              :label="$t('create_project.textfield.main_locale_label')"
+              :loading="localesLoading"
+              hide-no-data
+              hide-details
+              item-text="name"
+              item-value="id"
+              :rules="[rules.required]"
+            ></v-autocomplete>
+
+            <v-btn type="submit" class="form-submit">
+              {{ $t("create_project.button.submit") }}
+            </v-btn>
           </v-form>
         </div>
       </v-col>
@@ -45,6 +57,10 @@ export default {
   data: () => ({
     name: "",
     nameErrorMessage: "",
+    selectedLocale: "en",
+    locales: [],
+    localesLoading: true,
+    localesSearch: "",
     rules: {
       required: (value) => !!value || requiredMessage,
     },
@@ -53,20 +69,40 @@ export default {
     form() {
       return {
         name: this.name,
+        mainLocaleID: this.selectedLocale,
       };
     },
   },
   watch: {
     name() {
       this.nameErrorMessage = "";
-    },
+    }
   },
   validations: {
     name: {
       required,
     },
+    selectedLocale: {
+      required,
+    }
+  },
+  mounted() {
+    this.fetchLocales()
   },
   methods: {
+    fetchLocales() {
+      this.localesLoading = true
+      apiClient.getLocales()
+        .then((response) => {
+          this.locales = response.data
+          this.localesLoading = false
+        })
+        .catch((error) => {
+          console.log(error)
+          this.localesLoading = false
+        })
+    },
+
     createProject() {
       this.$v.$touch();
       if (this.$v.$invalid) return;
@@ -77,9 +113,8 @@ export default {
           this.$router.push({ name: "projects" });
         })
         .catch((error) => {
-          if (error.response.status != 422) return;
-          this.nameErrorMessage =
-            nameValidationErrors[error.response.data.reason] || "";
+          if (error.response.status !== 422) return;
+          this.nameErrorMessage = nameValidationErrors[error.response.data.reason] || "";
         });
     },
   },
