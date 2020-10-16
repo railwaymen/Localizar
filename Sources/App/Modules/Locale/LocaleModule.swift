@@ -1,5 +1,5 @@
 import Vapor
 
-struct LocaleModule {
+struct LocaleModule: Module {
     static let router: RouteCollection = LocaleRouter()
 }

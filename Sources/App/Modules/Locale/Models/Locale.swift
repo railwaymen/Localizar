@@ -18,6 +18,16 @@ struct Locale {
     let id: String
     let nameEN: String
     let nameOriginal: String
+
+}
+
+// MARK: - CustomStringConvertible
+extension Locale: CustomStringConvertible {
+    var description: String {
+        let base = "[\(id)] \(nameEN)"
+        guard nameEN != nameOriginal else { return base }
+        return base + " - \(nameOriginal)"
+    }
 }
 
 // MARK: - Array Extension

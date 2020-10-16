@@ -7,14 +7,14 @@ struct LocaleForm: OutputForm {
     // MARK: - Initialization
     init(model: Locale) {
         self.id = model.id
-        self.displayName = [model.nameEN, model.nameOriginal].joined(separator: " - ")
+        self.displayName = model.description
     }
     
     // MARK: - Internal
     func getOutput() -> Output {
         Output(
             id: id,
-            displayName: displayName)
+            name: displayName)
     }
 }
 
@@ -25,6 +25,6 @@ extension LocaleForm {
     // MARK: Output
     struct Output: Encodable {
         let id: String
-        let displayName: String
+        let name: String
     }
 }
