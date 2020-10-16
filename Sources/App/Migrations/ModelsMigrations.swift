@@ -2,10 +2,17 @@ import Vapor
 import Fluent
 
 struct ModelsMigrations {
-    static var all: [Migration] { [
+    static var all: [Migration] {
+        [
+            Self.v1_0
+        ].flatMap { $0 }
+    }
+    
+    private static var v1_0: [Migration] { [
         ModelsMigration_v1_0_0(),
         ModelsMigration_v1_0_1(),
         ModelsMigration_v1_0_2(),
         ModelsMigration_v1_0_3(),
+        ModelsMigration_v1_0_4(),
     ] }
 }

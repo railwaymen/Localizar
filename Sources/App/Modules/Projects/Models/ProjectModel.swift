@@ -10,6 +10,7 @@ final class ProjectModel: Model {
     @Field(key: FieldKeys.mainLocaleID) var mainLocaleID: String
     @Field(key: FieldKeys.supportedLocales) var supportedLocalesIDs: [String]
     
+    @Children(for: \TranslationModel.$project) var translations: [TranslationModel]
     @Siblings(through: ProjectUserPivot.self, from: \.$project, to: \.$user)
     var users: [UserModel]
     
@@ -30,6 +31,13 @@ final class ProjectModel: Model {
         self.supportedLocalesIDs = supportedLocalesIDs.contains(mainLocaleID)
             ? supportedLocalesIDs
             : ([mainLocaleID] + supportedLocalesIDs)
+    }
+    
+    // MARK: - Internal
+    func getTranslations(for localeID: String, on database: Database) -> EventLoopFuture<[TranslationModel]> {
+        $translations.query(on: database)
+            .filter(\.$localeID == localeID)
+            .all()
     }
 }
 
