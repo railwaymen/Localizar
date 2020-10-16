@@ -53,6 +53,7 @@ private func configureModules(_ app: Application) throws {
         ProjectsModule(),
         UsersModule(),
         LocaleModule(),
+        TranslationsModule(),
     ]
     
     app.migrations.add(ModelsMigrations.all)
