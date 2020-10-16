@@ -6,7 +6,7 @@ final class ProjectModel: Model {
     
     @ID var id: UUID?
     @Field(key: FieldKeys.name) var name: String
-    @Field(key: FieldKeys.slug) var slug: String?
+    @Field(key: FieldKeys.slug) var slug: String!
     @Field(key: FieldKeys.mainLocaleID) var mainLocaleID: String
     @Field(key: FieldKeys.supportedLocales) var supportedLocalesIDs: [String]
     

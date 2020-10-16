@@ -41,6 +41,7 @@ private func configureDirectories(_ app: Application) throws {
 private func configureDatabase(_ app: Application) throws {
     app.databases.use(.postgres(
         hostname: Environment.get("DATABASE_HOST")!,
+        port: Int(Environment.get("DATABASE_PORT")!)!,
         username: Environment.get("DATABASE_USERNAME")!,
         password: Environment.get("DATABASE_PASSWORD")!,
         database: Environment.get("DATABASE_NAME")!

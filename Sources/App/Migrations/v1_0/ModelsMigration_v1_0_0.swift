@@ -14,12 +14,16 @@ struct ModelsMigration_v1_0_0: Migration {
                 .field(UserTokenModel.FieldKeys.token, .string, .required, .sql(.unique))
                 .field(UserTokenModel.FieldKeys.createdAt, .datetime, .required)
                 .field(UserTokenModel.FieldKeys.user, .uuid, .required)
-                .foreignKey(UserTokenModel.FieldKeys.user, references: UserModel.schema, .id, onDelete: .cascade, onUpdate: .cascade)
+                .foreignKey(
+                    UserTokenModel.FieldKeys.user,
+                    references: UserModel.schema, .id,
+                    onDelete: .cascade,
+                    onUpdate: .cascade)
                 .create(),
             UserModel(
                 username: "admin",
                 password: try! Bcrypt.hash(Environment.get("ADMIN_PASSWORD")!))
-                .save(on: database)
+                .create(on: database)
         ])
     }
     
