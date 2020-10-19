@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run" type="SwiftPackageManagerRunConfiguration" factoryName="Swift Package Run" REDIRECT_INPUT="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Localizar" TARGET_NAME="Run" CONFIG_NAME="Swift Package Run" RUN_TARGET_PROJECT_NAME="Localizar" RUN_TARGET_NAME="Run" WAS_MODIFIED="">
+    <method v="2">
+      <option name="SPM.BUILD_TASK_PROVIDER" enabled="true" />
+    </method>
+  </configuration>
+</component>

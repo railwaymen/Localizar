@@ -3,6 +3,7 @@ import Fluent
 
 final class ProjectModel: Model {
     static let schema: String = "projects"
+    static let slugParameter: String = "project_slug"
     
     @ID var id: UUID?
     @Field(key: FieldKeys.name) var name: String
