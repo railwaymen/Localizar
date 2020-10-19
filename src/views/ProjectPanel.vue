@@ -4,13 +4,23 @@
       fluid
     >
       <v-row
-        align="top"
         justify="center"
         v-show="!isViewLoading"
       >
         <v-col md="8">
-          <h1>{{ project.name }}</h1>
-          <p>Visible</p>
+          <h1 class="page-title">{{ project.name }}</h1>
+          <v-btn
+            :color="translationsButtonColor"
+            @click="toggleTranslationsView"
+          >
+            {{ $t("project_panel.button.translations") }}
+          </v-btn>
+          
+          <TranslationsList
+            :project-slug="projectSlug"
+            :locale="project.mainLocale"
+            v-show="isTranslationsViewVisible"
+          ></TranslationsList>
         </v-col>
       </v-row>
       <v-row
@@ -30,16 +40,28 @@
 
 <script>
 import apiClient from "@/modules/apiClient";
+import TranslationsList from "@/components/TranslationsList";
 
 export default {
+  components: {TranslationsList},
   data: () => ({
     project: {},
     isViewLoading: false,
-    containerClass: ""
+    containerClass: "",
+    isTranslationsViewVisible: false,
+    translationsButtonColor: ""
   }),
   watch: {
     isViewLoading(val) {
       this.containerClass = val ? "fill-height" : ""
+    },
+    isTranslationsViewVisible(val) {
+      this.translationsButtonColor = val ? "primary" : ""
+    }
+  },
+  computed: {
+    projectSlug() {
+      return this.$route.params.slug
     }
   },
   mounted() {
@@ -48,9 +70,8 @@ export default {
   methods: {
     loadProject() {
       this.isViewLoading = true
-      const slug = this.$route.params.slug
       apiClient
-        .getProject(slug)
+        .getProject(this.projectSlug)
         .then((response) => {
           this.project = response.data
           this.isViewLoading = false
@@ -59,6 +80,17 @@ export default {
           console.log(error)
           this.isViewLoading = false
         })
+    },
+    toggleTranslationsView() {
+      if (this.isTranslationsViewVisible) {
+        this.hideAllViews()
+      } else {
+        this.hideAllViews()
+        this.isTranslationsViewVisible = true
+      }
+    },
+    hideAllViews() {
+      this.isTranslationsViewVisible = false
     }
   }
 }

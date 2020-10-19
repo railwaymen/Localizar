@@ -4,6 +4,7 @@ const Endpoint = {
   locales: () => '/locales',
   projects: (slug) => '/projects' + (!slug ? '' : ('/' + slug)),
   sessions: () => '/sessions',
+  translations: (projectSlug) => '/projects/' + projectSlug + '/translations',
   users: () => '/users'
 }
 
@@ -15,6 +16,9 @@ class ApiClient {
   getProjects = () => networking.get(Endpoint.projects())
   getProject = (slug) => networking.get(Endpoint.projects(slug))
   createProject = (form) => networking.post(Endpoint.projects(), form)
+  
+  // translations
+  getTranslations = (projectSlug, options) => networking.get(Endpoint.translations(projectSlug), { params: options })
 
   // sessions
   logIn = (form) => networking.post(Endpoint.sessions(), form)

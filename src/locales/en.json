@@ -58,6 +58,17 @@
       "slug_invalid": "The slug for project name couldn't be generated."
     }
   },
+  "project_panel": {
+    "button": {
+      "translations": "Translations"
+    }
+  },
+  "translations": {
+    "table_headers": {
+      "key": "Key",
+      "value": "Value"
+    }
+  },
   "generic": {
     "error": {
       "field_required": "Required"

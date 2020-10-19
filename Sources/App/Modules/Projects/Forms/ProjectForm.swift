@@ -51,7 +51,10 @@ struct ProjectForm: InOutForm {
     }
     
     func getOutput() -> Output {
-        Output(name: name, slug: slug)
+        Output(
+            name: name,
+            slug: slug,
+            mainLocale: mainLocaleID)
     }
 }
 
@@ -102,5 +105,6 @@ extension ProjectForm {
     struct Output: Encodable {
         let name: String
         let slug: String
+        let mainLocale: String
     }
 }

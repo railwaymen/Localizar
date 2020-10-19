@@ -84,10 +84,15 @@ export default {
   font-size: 1.5rem;
 }
 
+.page-title {
+  margin-bottom: 24px;
+  margin-top: 8px
+}
+
 .form-container {
-  -webkit-box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.3);
   padding: 48px;
   border-radius: 12px;
 }
