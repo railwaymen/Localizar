@@ -12,6 +12,7 @@
           <v-btn
             :color="translationsButtonColor"
             @click="toggleTranslationsView"
+            style="margin-bottom: 24px;"
           >
             {{ $t("project_panel.button.translations") }}
           </v-btn>

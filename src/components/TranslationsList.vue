@@ -1,6 +1,61 @@
 <template>
   <div id="translations-list">
-    <h1>{{ projectSlug }}</h1>
+    <v-row
+      no-gutters
+      style="margin-bottom: 24px;"
+    >
+      <v-spacer></v-spacer>
+      <v-dialog
+        v-model="dialog"
+        max-width="600px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+          >
+            {{ $t("translations.button.create") }}
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title>{{ $t("translations.dialog.title.new") }}</v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="editItem.key"
+                    :label="$t('translations.dialog.textfield.key')"
+                    @keydown.enter="saveItem"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="editItem.value"
+                    :label="$t('translations.dialog.textfield.value')"
+                    @keydown.enter="saveItem"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text
+              @click="closeDialog"
+            >
+              {{ $t("translations.dialog.button.close") }}
+            </v-btn>
+            <v-btn
+              text
+              @click="saveItem"
+            >
+              {{ $t("translations.dialog.button.save") }}
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+    
     <v-data-table
       :headers="headers"
       :items="items"
@@ -46,11 +101,24 @@ export default {
         sortable: false
       }
     ],
-    items: []
+    items: [],
+    
+    dialog: false,
+    editItem: {
+      key: "",
+      value: ""
+    },
+    defaultItem: {
+      key: "",
+      value: ""
+    }
   }),
   watch: {
     options() {
       this.loadTranslations()
+    },
+    dialog(val) {
+      val || this.closeDialog()
     }
   },
   methods: {
@@ -69,7 +137,29 @@ export default {
           console.log(error)
           this.loading = false
         })
+    },
+    
+    closeDialog() {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.editItem = Object.assign({}, this.defaultItem)
+      })
+    },
+  
+    saveItem() {
+      if (!this.editItem.key || !this.editItem.value)
+        return;
+    
+      apiClient
+        .createTranslation(this.projectSlug, this.editItem)
+        .then(() => {
+          this.loadTranslations()
+          this.closeDialog()
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
-  }
+  },
 }
 </script>

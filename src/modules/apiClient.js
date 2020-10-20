@@ -19,6 +19,7 @@ class ApiClient {
   
   // translations
   getTranslations = (projectSlug, options) => networking.get(Endpoint.translations(projectSlug), { params: options })
+  createTranslation = (projectSlug, data) => networking.post(Endpoint.translations(projectSlug), data)
 
   // sessions
   logIn = (form) => networking.post(Endpoint.sessions(), form)

@@ -64,6 +64,22 @@
     }
   },
   "translations": {
+    "button": {
+      "create": "New Translation"
+    },
+    "dialog": {
+      "button": {
+        "save": "Save",
+        "close": "Close"
+      },
+      "textfield": {
+        "key": "Key",
+        "value": "Text in the main locale"
+      },
+      "title": {
+        "new": "New Translation"
+      }
+    },
     "table_headers": {
       "key": "Key",
       "value": "Value"
