@@ -17,14 +17,22 @@ struct TranslationsController {
             .filter(\.$slug == projectSlug)
             .first()
             .unwrap(or: Abort(.notFound))
-            .flatMap {
-                $0.$translations.query(on: req.db)
-                    .filter(\.$localeID == options.locale ?? $0.mainLocaleID)
+            .flatMap { project in
+                project.$translations.query(on: req.db)
+                    .filter(\.$localeID == options.locale ?? project.mainLocaleID)
+                    .with(\.$createdBy)
+                    .with(\.$project)
                     .paginate(PageRequest(page: options.page, per: options.perPage))
             }
             .flatMapThrowing { page -> TranslationForm.PageOutput in
                 try TranslationForm.getPage(from: page)
             }
             .flatMapThrowing { try Response.ok(body: $0) }
+    }
+    
+    func create(_ req: Request) throws -> EventLoopFuture<Response> {
+        let form = try TranslationForm(req: req)
+        return form.createModel(req: req)
+            .map { _ in Response.noContent() }
     }
 }
