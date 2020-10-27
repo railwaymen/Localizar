@@ -9,19 +9,33 @@
       >
         <v-col md="8">
           <h1 class="page-title">{{ project.name }}</h1>
-          <v-btn
-            :color="translationsButtonColor"
-            @click="toggleTranslationsView"
-            style="margin-bottom: 24px;"
-          >
-            {{ $t("project_panel.button.translations") }}
-          </v-btn>
-          
+          <v-row style="margin-bottom: 24px;">
+            <v-btn
+              :color="translationsButtonColor"
+              @click="toggleTranslationsView"
+              class="nav-btn"
+            >
+              {{ $t("project_panel.button.translations") }}
+            </v-btn>
+            <v-btn
+              :color="optionsButtonColor"
+              @click="toggleOptionsView"
+              class="nav-btn"
+            >
+              {{ $t("project_panel.button.options") }}
+            </v-btn>
+          </v-row>
+    
           <TranslationsList
             :project-slug="projectSlug"
             :locale="project.mainLocale"
             v-show="isTranslationsViewVisible"
           ></TranslationsList>
+          
+          <LocaleSettings
+            :project="project"
+            v-show="isOptionsViewVisible"
+          ></LocaleSettings>
         </v-col>
       </v-row>
       <v-row
@@ -42,15 +56,18 @@
 <script>
 import apiClient from "@/modules/apiClient";
 import TranslationsList from "@/components/TranslationsList";
+import LocaleSettings from "@/components/LocaleSettings";
 
 export default {
-  components: {TranslationsList},
+  components: {LocaleSettings, TranslationsList},
   data: () => ({
     project: {},
     isViewLoading: false,
     containerClass: "",
     isTranslationsViewVisible: false,
-    translationsButtonColor: ""
+    translationsButtonColor: "",
+    isOptionsViewVisible: false,
+    optionsButtonColor: "",
   }),
   watch: {
     isViewLoading(val) {
@@ -58,6 +75,9 @@ export default {
     },
     isTranslationsViewVisible(val) {
       this.translationsButtonColor = val ? "primary" : ""
+    },
+    isOptionsViewVisible(val) {
+      this.optionsButtonColor = val ? "primary" : ""
     }
   },
   computed: {
@@ -67,6 +87,7 @@ export default {
   },
   mounted() {
     this.loadProject()
+    this.isTranslationsViewVisible = true
   },
   methods: {
     loadProject() {
@@ -82,16 +103,24 @@ export default {
           this.isViewLoading = false
         })
     },
+    
     toggleTranslationsView() {
-      if (this.isTranslationsViewVisible) {
-        this.hideAllViews()
-      } else {
-        this.hideAllViews()
+      this.hideAllViews()
+      if (!this.isTranslationsViewVisible) {
         this.isTranslationsViewVisible = true
       }
     },
+  
+    toggleOptionsView() {
+      this.hideAllViews()
+      if (!this.isTranslationsViewVisible) {
+        this.isOptionsViewVisible = true
+      }
+    },
+    
     hideAllViews() {
       this.isTranslationsViewVisible = false
+      this.isOptionsViewVisible = false
     }
   }
 }

@@ -60,7 +60,8 @@
   },
   "project_panel": {
     "button": {
-      "translations": "Translations"
+      "translations": "Translations",
+      "options": "Options"
     }
   },
   "translations": {

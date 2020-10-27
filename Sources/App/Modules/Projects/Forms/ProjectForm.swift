@@ -54,7 +54,8 @@ struct ProjectForm: InOutForm {
         Output(
             name: name,
             slug: slug,
-            mainLocale: mainLocaleID)
+            mainLocale: mainLocaleID,
+            supportedLocales: supportedLocalesIDs)
     }
 }
 
@@ -106,5 +107,6 @@ extension ProjectForm {
         let name: String
         let slug: String
         let mainLocale: String
+        let supportedLocales: [String]
     }
 }
