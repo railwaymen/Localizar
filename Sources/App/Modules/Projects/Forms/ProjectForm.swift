@@ -19,14 +19,18 @@ struct ProjectForm: InOutForm {
         let input = try req.content.decode(Input.self)
         let name = input.name.trimmingCharacters(in: .whitespacesAndNewlines)
         self.name = name
-        self.slug = name.convertedToSlug() ?? ""
+        self.slug = req.parameters.get(ProjectModel.slugParameter)
+            ?? input.slug
+            ?? name.convertedToSlug()
+            ?? ""
         self.mainLocaleID = input.mainLocaleID
-        self.supportedLocalesIDs = [input.mainLocaleID]
+        self.supportedLocalesIDs = input.supportedLocales.flatMap { $0.isEmpty ? nil : $0 }
+            ?? [input.mainLocaleID]
     }
     
     init(model: ProjectModel) {
         self.name = model.name
-        self.slug = model.slug!
+        self.slug = model.slug
         self.mainLocaleID = model.mainLocaleID
         self.supportedLocalesIDs = model.supportedLocalesIDs
     }
@@ -41,12 +45,22 @@ struct ProjectForm: InOutForm {
             supportedLocalesIDs: supportedLocalesIDs)
     }
     
-    func validate(on database: Database) -> EventLoopFuture<ValidationError?> {
+    func updateModel(_ model: ProjectModel) -> ProjectModel {
+        model.name = name
+        model.mainLocaleID = mainLocaleID
+        model.supportedLocalesIDs = supportedLocalesIDs
+        return model
+    }
+    
+    func validate(on database: Database) -> EventLoopFuture<Void> {
         ProjectModel.query(on: database)
             .filter(\.$slug == slug)
             .first()
-            .map { $0 == nil ? nil : ValidationError.projectNameAlreadyExists }
-            .unwrap(orElse: { firstValidationError() })
+            .guard({ $0 == nil }, else: ValidationError.projectNameAlreadyExists)
+            .flatMapThrowing { _ in
+                guard let error = firstValidationError() else { return }
+                throw error
+            }
         
     }
     
@@ -99,7 +113,9 @@ extension ProjectForm {
     // MARK: Input
     private struct Input: Decodable {
         let name: String
+        let slug: String?
         let mainLocaleID: String
+        let supportedLocales: [String]?
     }
     
     // MARK: Output

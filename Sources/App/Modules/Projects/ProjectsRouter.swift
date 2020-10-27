@@ -11,5 +11,6 @@ struct ProjectsRouter: RouteCollection {
         routesV1.get("projects", use: controller.getAll)
         routesV1.get("projects", .parameter(ProjectModel.slugParameter), use: controller.getDetails)
         routesV1.post("projects", use: controller.create)
+        routesV1.put("projects", .parameter(ProjectModel.slugParameter), use: controller.update)
     }
 }

@@ -29,12 +29,7 @@ struct ProjectsController {
         let form = try ProjectForm(req: req)
         
         return form.validate(on: req.db)
-            .flatMapThrowing { validationError -> ProjectModel in
-                if let error = validationError {
-                    throw error
-                }
-                return try form.createModel()
-            }
+            .flatMapThrowing { try form.createModel() }
             .flatMap { project -> EventLoopFuture<ProjectModel> in
                 project
                     .save(on: req.db)
@@ -42,5 +37,20 @@ struct ProjectsController {
             }
             .flatMap { $0.$users.attach(user, on: req.db) }
             .map { Response.noContent() }
+    }
+    
+    func update(_ req: Request) throws -> EventLoopFuture<Response> {
+        let user = try req.auth.require(UserModel.self)
+        let form = try ProjectForm(req: req)
+    
+        return form.validate(on: req.db)
+            .flatMap {
+                user.$projects.query(on: req.db)
+                    .filter(\.$slug == form.slug)
+                    .first()
+                    .unwrap(or: Abort(.notFound))
+            }
+            .map { form.updateModel($0) }
+            .map { _ in Response.noContent() }
     }
 }
