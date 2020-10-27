@@ -26,6 +26,7 @@
                   <v-text-field
                     v-model="editItem.key"
                     :label="$t('translations.dialog.textfield.key')"
+                    :error-messages="keyValidationError"
                     @keydown.enter="saveItem"
                   ></v-text-field>
                   <v-text-field
@@ -79,6 +80,10 @@
 import i18n from "@/i18n";
 import apiClient from "@/modules/apiClient";
 
+const validationErrors = {
+  keyExists: i18n.t("translations.dialog.error.key_exists")
+}
+
 export default {
   name: "TranslationsList",
   props: ["projectSlug", "locale"],
@@ -111,14 +116,23 @@ export default {
     defaultItem: {
       key: "",
       value: ""
-    }
+    },
+    keyValidationError: ""
   }),
+  computed: {
+    editItemKey() {
+      return this.editItem.key
+    }
+  },
   watch: {
     options() {
       this.loadTranslations()
     },
     dialog(val) {
       val || this.closeDialog()
+    },
+    editItemKey() {
+      this.keyValidationError = ""
     }
   },
   methods: {
@@ -157,7 +171,11 @@ export default {
           this.closeDialog()
         })
         .catch((error) => {
-          console.log(error)
+          if (error.response.status === 422) {
+            this.keyValidationError = validationErrors[error.response.data.reason]
+          } else {
+            console.log(error)
+          }
         })
     }
   },

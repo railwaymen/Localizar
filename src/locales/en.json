@@ -78,6 +78,9 @@
       },
       "title": {
         "new": "New Translation"
+      },
+      "error": {
+        "key_exists": "The key already exists."
       }
     },
     "table_headers": {
