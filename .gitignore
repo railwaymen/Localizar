@@ -9,10 +9,12 @@ db.sqlite
 
 node_modules
 /dist
-config.js
 
 # local env files
-.env*
+.env
+.env.testing
+.env.development
+.env.production
 .env.local
 .env.*.local
 

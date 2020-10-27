@@ -19,25 +19,24 @@ Web app for localizing mobile/web apps.
 ### Installation
 
 1. Install yarn dependencies
-```
-yarn install
-```
-2. In the `src` directory create file `config.js` and export `coreBackendHost` there. (For production it can return an empty string.)
-3. Create the PostgreSQL database
-4. In the root directory create a `.env` file with access to the database and admin user password.
-5. Build frontend:
+    ```
+    yarn install
+    ```
+2. Create the PostgreSQL database
+3. In the root directory create a `.env` file providing values from the `.env.template` file.
+4. Build frontend:
 
-- For production:
-```
-yarn build 
-```
-
-- For debug:
-```
-yarn serve --port 8000
-```
+    - For production:
+        ```
+        yarn build 
+        ```
+    
+    - For debug:
+        ```
+        yarn serve --port 8000
+        ```
 
 6. Build and run backend:
-```
-swift run Run
-```
+    ```
+    swift run Run
+    ```
