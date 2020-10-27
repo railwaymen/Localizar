@@ -4,19 +4,106 @@
     <p>{{ project.mainLocale }}</p>
     
     <h3>Supported Locales:</h3>
-    <p>{{ project.supportedLocales.join(', ') }}</p>
+    <p v-show="!editMode">{{ project.supportedLocales.join(', ') }}</p>
+    <v-autocomplete
+      v-model="editItem.supportedLocales"
+      :loading="localesLoading"
+      :items="locales"
+      chips
+      small-chips
+      multiple
+      deletable-chips
+      v-show="editMode"
+      item-value="id"
+      item-text="name"
+    ></v-autocomplete>
     
+    <v-btn
+      @click="edit"
+      v-show="!editMode"
+      class="nav-btn"
+    >
+      {{ $t("locale_settings.button.edit") }}
+    </v-btn>
+    
+    <v-btn
+      @click="cancelEditing"
+      v-show="editMode"
+      class="nav-btn"
+    >
+      {{ $t("locale_settings.button.cancel") }}
+    </v-btn>
+    
+    <v-btn
+      @click="save"
+      v-show="editMode"
+      class="nav-btn"
+      color="success"
+    >
+      {{ $t("locale_settings.button.save") }}
+    </v-btn>
   </div>
 </template>
 
 <script>
+import apiClient from "@/modules/apiClient";
+
 export default {
   name: "LocaleSettings",
   props: ["project"],
   data: () => ({
-  
+    editMode: false,
+    editItem: {
+      id: null,
+      mainLocale: "",
+      supportedLocales: [],
+    },
+    defaultItem: {
+      id: null,
+      mainLocale: "",
+      supportedLocales: [],
+    },
+    localesLoading: false,
+    locales: [],
   }),
   methods: {
+    loadLocales() {
+      this.localesLoading = true
+      apiClient
+        .getLocales()
+        .then((response) => {
+          this.locales = response.data
+          this.localesLoading = false
+        })
+        .catch((error) => {
+          console.log(error)
+          this.localesLoading = false
+        })
+    },
+    
+    edit() {
+      this.editItem = Object.assign({}, this.project)
+      this.editMode = true
+      this.locales.length > 0 || this.localesLoading || this.loadLocales()
+    },
+  
+    cancelEditing() {
+      this.editItem = Object.assign({}, this.defaultItem)
+      this.editMode = false
+    },
+    
+    save() {
+      this.updateModel()
+        .then(() => {
+          this.editItem = Object.assign({}, this.defaultItem)
+          this.editMode = false
+        })
+    },
+    
+    updateModel() {
+      // TODO: save
+      return Promise.resolve()
+    },
   },
 }
 </script>

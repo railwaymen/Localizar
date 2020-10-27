@@ -98,6 +98,13 @@
       "actions": "Actions"
     }
   },
+  "locale_settings": {
+    "button": {
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  },
   "generic": {
     "error": {
       "field_required": "Required"

@@ -103,21 +103,21 @@ export default {
           this.isViewLoading = false
         })
     },
-    
+  
     toggleTranslationsView() {
-      this.hideAllViews()
       if (!this.isTranslationsViewVisible) {
+        this.hideAllViews()
         this.isTranslationsViewVisible = true
       }
     },
   
     toggleOptionsView() {
-      this.hideAllViews()
-      if (!this.isTranslationsViewVisible) {
+      if (!this.isOptionsViewVisible) {
+        this.hideAllViews()
         this.isOptionsViewVisible = true
       }
     },
-    
+  
     hideAllViews() {
       this.isTranslationsViewVisible = false
       this.isOptionsViewVisible = false
