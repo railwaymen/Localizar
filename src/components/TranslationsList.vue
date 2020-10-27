@@ -68,7 +68,34 @@
       class="elevation-1"
       hide-default-footer
       @page-count="pageCount = $event"
-    ></v-data-table>
+    >
+      <template v-slot:top>
+        <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-card>
+            <v-card-title class="headline">{{ $t("translations.dialog_delete.title") }}</v-card-title>
+            <v-card-text>{{ $t("translations.dialog_delete.message", { key: editItem.key }) }}</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDelete">
+                {{ $t("translations.dialog_delete.button.cancel") }}
+              </v-btn>
+              <v-btn color="red darken-1" text @click="deleteItemConfirm">
+                {{ $t("translations.dialog_delete.button.confirm") }}
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon
+          small
+          @click="deleteItem(item)"
+        >
+          mdi-delete
+        </v-icon>
+      </template>
+    </v-data-table>
     <v-pagination
       v-model="page"
       :length="pageCount"
@@ -98,22 +125,31 @@ export default {
       {
         text: i18n.t("translations.table_headers.key"),
         value: "key",
-        sortable: false
+        sortable: false,
       },
       {
         text: i18n.t("translations.table_headers.value"),
         value: "value",
-        sortable: false
+        sortable: false,
+      },
+      {
+        text: i18n.t("translations.table_headers.actions"),
+        value: "actions",
+        sortable: false,
       }
     ],
     items: [],
     
     dialog: false,
+    dialogDelete: false,
+    editIndex: -1,
     editItem: {
+      id: null,
       key: "",
       value: ""
     },
     defaultItem: {
+      id: null,
       key: "",
       value: ""
     },
@@ -130,6 +166,9 @@ export default {
     },
     dialog(val) {
       val || this.closeDialog()
+    },
+    dialogDelete(val) {
+      val || this.closeDelete()
     },
     editItemKey() {
       this.keyValidationError = ""
@@ -157,6 +196,34 @@ export default {
       this.dialog = false
       this.$nextTick(() => {
         this.editItem = Object.assign({}, this.defaultItem)
+      })
+    },
+  
+    deleteItem(item) {
+      this.editIndex = this.items.indexOf(item)
+      this.editItem = Object.assign({}, item)
+      this.dialogDelete = true
+    },
+  
+    deleteItemConfirm() {
+      this.loading = true
+      apiClient
+        .deleteTranslation(this.projectSlug, this.editItem.id)
+        .then(() => {
+          this.closeDelete()
+          this.loadTranslations()
+        })
+        .catch((error) => {
+          console.log(error)
+          this.loading = false
+        })
+    },
+  
+    closeDelete() {
+      this.dialogDelete = false
+      this.$nextTick(() => {
+        this.editIndex = -1
+        this.editedItem = Object.assign({}, this.defaultItem)
       })
     },
   

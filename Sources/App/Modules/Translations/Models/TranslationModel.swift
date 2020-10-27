@@ -3,6 +3,7 @@ import Fluent
 
 final class TranslationModel: Model {
     static let schema: String = "translations"
+    static let idParameter: String = "translation_id"
     
     @ID var id: UUID?
     @Field(key: FieldKeys.key) var key: String

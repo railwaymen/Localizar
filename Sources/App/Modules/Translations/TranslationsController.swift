@@ -35,4 +35,23 @@ struct TranslationsController {
         return form.createModel(req: req)
             .map { _ in Response.noContent() }
     }
+    
+    func delete(_ req: Request) throws -> EventLoopFuture<Response> {
+        let projectSlug = try req.parameters.require(ProjectModel.slugParameter)
+        let translationID = try req.parameters.require(TranslationModel.idParameter, as: UUID.self)
+        return try req.auth.require(UserModel.self)
+            .$projects
+            .query(on: req.db)
+            .filter(\.$slug == projectSlug)
+            .first()
+            .unwrap(or: Abort(.notFound))
+            .flatMap {
+                $0.$translations.query(on: req.db)
+                    .filter(.id, .equal, translationID)
+                    .first()
+            }
+            .unwrap(or: Abort(.notFound))
+            .flatMap { $0.delete(on: req.db) }
+            .map { Response.noContent() }
+    }
 }
