@@ -8,7 +8,9 @@ struct TranslationsRouter: RouteCollection {
             .grouped("v1")
             .grouped(UserTokenAuthenticator<UserTokenModel>())
             .grouped(UserModel.guardMiddleware())
-        routesV1.get("projects", .parameter(ProjectModel.slugParameter), "translations", use: controller.getWithPagination)
-        routesV1.post("projects", .parameter(ProjectModel.slugParameter), "translations", use: controller.create)
+            .grouped("projects", .parameter(ProjectModel.slugParameter), "translations")
+        routesV1.get(use: controller.getWithPagination)
+        routesV1.post(use: controller.create)
+        routesV1.delete(.parameter(TranslationModel.idParameter), use: controller.delete)
     }
 }

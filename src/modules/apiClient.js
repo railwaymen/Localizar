@@ -1,10 +1,16 @@
 import networking from './networking'
 
+const toURLParameter = (parameter) => {
+  return parameter
+    ? "/" + parameter
+    : ""
+}
+
 const Endpoint = {
   locales: () => '/locales',
-  projects: (slug) => '/projects' + (!slug ? '' : ('/' + slug)),
+  projects: (slug) => '/projects' + toURLParameter(slug),
   sessions: () => '/sessions',
-  translations: (projectSlug) => '/projects/' + projectSlug + '/translations',
+  translations: (projectSlug, translationID) => '/projects/' + projectSlug + '/translations' + toURLParameter(translationID),
   users: () => '/users'
 }
 
@@ -20,6 +26,7 @@ class ApiClient {
   // translations
   getTranslations = (projectSlug, options) => networking.get(Endpoint.translations(projectSlug), { params: options })
   createTranslation = (projectSlug, data) => networking.post(Endpoint.translations(projectSlug), data)
+  deleteTranslation = (projectSlug, translationID) => networking.delete(Endpoint.translations(projectSlug, translationID))
 
   // sessions
   logIn = (form) => networking.post(Endpoint.sessions(), form)
