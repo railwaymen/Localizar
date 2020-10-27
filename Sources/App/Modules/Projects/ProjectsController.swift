@@ -11,6 +11,19 @@ struct ProjectsController {
             .flatMapThrowing { try Response.ok(body: $0) }
     }
     
+    func getDetails(_ req: Request) throws -> EventLoopFuture<Response> {
+        let user = try req.auth.require(UserModel.self)
+        let projectSlug = try req.parameters.require(ProjectModel.slugParameter)
+        
+        return user.$projects
+            .query(on: req.db)
+            .filter(\.$slug == projectSlug)
+            .first()
+            .unwrap(or: Abort(.notFound))
+            .map { ProjectForm(model: $0).getOutput() }
+            .flatMapThrowing { try Response.ok(body: $0) }
+    }
+    
     func create(_ req: Request) throws -> EventLoopFuture<Response> {
         let user = try req.auth.require(UserModel.self)
         let form = try ProjectForm(req: req)

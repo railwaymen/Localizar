@@ -58,6 +58,36 @@
       "slug_invalid": "The slug for project name couldn't be generated."
     }
   },
+  "project_panel": {
+    "button": {
+      "translations": "Translations"
+    }
+  },
+  "translations": {
+    "button": {
+      "create": "New Translation"
+    },
+    "dialog": {
+      "button": {
+        "save": "Save",
+        "close": "Close"
+      },
+      "textfield": {
+        "key": "Key",
+        "value": "Text in the main locale"
+      },
+      "title": {
+        "new": "New Translation"
+      },
+      "error": {
+        "key_exists": "The key already exists."
+      }
+    },
+    "table_headers": {
+      "key": "Key",
+      "value": "Value"
+    }
+  },
   "generic": {
     "error": {
       "field_required": "Required"

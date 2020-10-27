@@ -1,25 +1,31 @@
 import networking from './networking'
 
 const Endpoint = {
-  locales: '/locales',
-  projects: '/projects',
-  sessions: '/sessions',
-  users: '/users'
+  locales: () => '/locales',
+  projects: (slug) => '/projects' + (!slug ? '' : ('/' + slug)),
+  sessions: () => '/sessions',
+  translations: (projectSlug) => '/projects/' + projectSlug + '/translations',
+  users: () => '/users'
 }
 
 class ApiClient {
   // locales
-  getLocales = () => networking.get(Endpoint.locales)
+  getLocales = () => networking.get(Endpoint.locales())
 
   // projects
-  getProjects = () => networking.get(Endpoint.projects)
-  createProject = (form) => networking.post(Endpoint.projects, form)
+  getProjects = () => networking.get(Endpoint.projects())
+  getProject = (slug) => networking.get(Endpoint.projects(slug))
+  createProject = (form) => networking.post(Endpoint.projects(), form)
+  
+  // translations
+  getTranslations = (projectSlug, options) => networking.get(Endpoint.translations(projectSlug), { params: options })
+  createTranslation = (projectSlug, data) => networking.post(Endpoint.translations(projectSlug), data)
 
   // sessions
-  logIn = (form) => networking.post(Endpoint.sessions, form)
+  logIn = (form) => networking.post(Endpoint.sessions(), form)
 
   // users
-  createUser = (form) => networking.post(Endpoint.users, form)
+  createUser = (form) => networking.post(Endpoint.users(), form)
 
   // Token management
   getToken() {
