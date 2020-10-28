@@ -54,12 +54,12 @@ export default {
   data: () => ({
     editMode: false,
     editItem: {
-      id: null,
+      slug: "",
       mainLocale: "",
       supportedLocales: [],
     },
     defaultItem: {
-      id: null,
+      slug: "",
       mainLocale: "",
       supportedLocales: [],
     },
@@ -99,10 +99,20 @@ export default {
           this.editMode = false
         })
     },
-    
+  
     updateModel() {
-      // TODO: save
-      return Promise.resolve()
+      return new Promise((resolve, reject) => {
+        apiClient
+          .updateProject(this.editItem)
+          .then((response) => {
+            this.project = response.data
+            resolve(response)
+          })
+          .catch((error) => {
+            console.log(error)
+            reject(error)
+          })
+      })
     },
   },
 }

@@ -28,7 +28,7 @@ struct ProjectsController {
         let user = try req.auth.require(UserModel.self)
         let form = try ProjectForm(req: req)
         
-        return form.validate(on: req.db)
+        return form.validateForCreate(on: req.db)
             .flatMapThrowing { try form.createModel() }
             .flatMap { project -> EventLoopFuture<ProjectModel> in
                 project
@@ -43,7 +43,7 @@ struct ProjectsController {
         let user = try req.auth.require(UserModel.self)
         let form = try ProjectForm(req: req)
     
-        return form.validate(on: req.db)
+        return form.validateForUpdate(on: req.db)
             .flatMap {
                 user.$projects.query(on: req.db)
                     .filter(\.$slug == form.slug)
@@ -51,6 +51,10 @@ struct ProjectsController {
                     .unwrap(or: Abort(.notFound))
             }
             .map { form.updateModel($0) }
-            .map { _ in Response.noContent() }
+            .flatMap { model in
+                model.update(on: req.db)
+                    .map { ProjectForm(model: model).getOutput() }
+            }
+            .flatMapThrowing { try Response.ok(body: $0) }
     }
 }

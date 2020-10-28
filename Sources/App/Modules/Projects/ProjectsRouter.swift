@@ -8,9 +8,10 @@ struct ProjectsRouter: RouteCollection {
             .grouped("v1")
             .grouped(UserTokenAuthenticator<UserTokenModel>())
             .grouped(UserModel.guardMiddleware())
-        routesV1.get("projects", use: controller.getAll)
-        routesV1.get("projects", .parameter(ProjectModel.slugParameter), use: controller.getDetails)
-        routesV1.post("projects", use: controller.create)
-        routesV1.put("projects", .parameter(ProjectModel.slugParameter), use: controller.update)
+            .grouped("projects")
+        routesV1.get(use: controller.getAll)
+        routesV1.get(.parameter(ProjectModel.slugParameter), use: controller.getDetails)
+        routesV1.post(use: controller.create)
+        routesV1.put(.parameter(ProjectModel.slugParameter), use: controller.update)
     }
 }

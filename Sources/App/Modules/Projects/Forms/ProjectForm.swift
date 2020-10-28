@@ -23,9 +23,9 @@ struct ProjectForm: InOutForm {
             ?? input.slug
             ?? name.convertedToSlug()
             ?? ""
-        self.mainLocaleID = input.mainLocaleID
+        self.mainLocaleID = input.mainLocale
         self.supportedLocalesIDs = input.supportedLocales.flatMap { $0.isEmpty ? nil : $0 }
-            ?? [input.mainLocaleID]
+            ?? [input.mainLocale]
     }
     
     init(model: ProjectModel) {
@@ -52,7 +52,7 @@ struct ProjectForm: InOutForm {
         return model
     }
     
-    func validate(on database: Database) -> EventLoopFuture<Void> {
+    func validateForCreate(on database: Database) -> EventLoopFuture<Void> {
         ProjectModel.query(on: database)
             .filter(\.$slug == slug)
             .first()
@@ -61,7 +61,14 @@ struct ProjectForm: InOutForm {
                 guard let error = firstValidationError() else { return }
                 throw error
             }
-        
+    }
+    
+    func validateForUpdate(on database: Database) -> EventLoopFuture<Void> {
+        database.eventLoop.future(firstValidationError())
+            .flatMapThrowing { optionalError in
+                guard let error = optionalError else { return }
+                throw error
+            }
     }
     
     func getOutput() -> Output {
@@ -114,7 +121,7 @@ extension ProjectForm {
     private struct Input: Decodable {
         let name: String
         let slug: String?
-        let mainLocaleID: String
+        let mainLocale: String
         let supportedLocales: [String]?
     }
     
