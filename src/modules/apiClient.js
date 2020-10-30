@@ -22,6 +22,7 @@ class ApiClient {
   getProjects = () => networking.get(Endpoint.projects())
   getProject = (slug) => networking.get(Endpoint.projects(slug))
   createProject = (form) => networking.post(Endpoint.projects(), form)
+  updateProject = (project) => networking.put(Endpoint.projects(project.slug), project)
   
   // translations
   getTranslations = (projectSlug, options) => networking.get(Endpoint.translations(projectSlug), { params: options })
