@@ -70,7 +70,7 @@ extension TranslationsTests {
         try UserModel.query(on: database)
             .filter(\.$username == "admin")
             .first()
-            .unwrap(or: Abort(.internalServerError))
+            .unwrap(or: Abort(.notFound))
             .wait()
     }
 }
